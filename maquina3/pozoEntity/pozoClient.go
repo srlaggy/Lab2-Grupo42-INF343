@@ -3,15 +3,15 @@ package main
 import (
 	"context"
 	"log"
-	"os"
 	"time"
+	"fmt"
 
-	grpc "google.golang.org/grpc"
-	pb "./pozo"
+	"google.golang.org/grpc"
+	pb "lab/pozo/pozo"
 )
 
 const (
-	address     = "localhost:60000"
+	address = "localhost:60000"
 )
 
 func main() {
@@ -26,9 +26,9 @@ func main() {
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	r, err := c.SendMount(ctx, &pb.MountReq)
+	r, err := c.SendMount(ctx, &pb.MountReq{})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
-	log.Printf("Greeting: %s", r.GetMonto())
+	fmt.Println("El pozo tiene un monto de: %d", r.GetMonto())
 }

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "F:/Proyectos/lab2distribuidos/maquina3/pozoEntity/pozo";
+option go_package = "lab/pozo";
 
 package pozo;
 

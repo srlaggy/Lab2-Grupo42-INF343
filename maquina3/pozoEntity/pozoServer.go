@@ -5,8 +5,8 @@ import (
 	"log"
 	"net"
 
-	grpc "google.golang.org/grpc"
-	pb "./pozo"
+	"google.golang.org/grpc"
+	pb "lab/pozo/pozo"
 )
 
 const (
@@ -19,7 +19,7 @@ type server struct {
 
 func (s *server) SendMount(ctx context.Context, in *pb.MountReq) (*pb.MountResp, error) {
 	log.Printf("Received")
-	return &pb.MountResp{monto: 1234567890}, nil
+	return &pb.MountResp{Monto: 1234567890}, nil
 }
 
 func main() {
