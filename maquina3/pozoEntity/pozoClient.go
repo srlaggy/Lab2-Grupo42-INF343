@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"log"
 	"time"
 	"fmt"
 
@@ -11,24 +10,22 @@ import (
 )
 
 const (
-	address = "localhost:60000"
+	protocolo = ""
+	address = "localhost"
+	port = "60000"
 )
 
 func main() {
 	// Set up a connection to the server.
-	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
-	if err != nil {
-		log.Fatalf("did not connect: %v", err)
-	}
+	conn, err := grpc.Dial(createDir(protocolo, address, port), grpc.WithInsecure(), grpc.WithBlock())
+	failOnError(err, "Failed to create a connection")
 	defer conn.Close()
-	c := pb.NewPozoServiceClient(conn)
 
+	c := pb.NewPozoServiceClient(conn)
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 	r, err := c.SendMount(ctx, &pb.MountReq{})
-	if err != nil {
-		log.Fatalf("could not greet: %v", err)
-	}
+	failOnError(err, "Failed to send a mount")
 	fmt.Println("El pozo tiene un monto de: %d", r.GetMonto())
 }

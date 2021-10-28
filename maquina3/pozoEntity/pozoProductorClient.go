@@ -1,22 +1,17 @@
 package main
 
 import (
-	"log"
 	"github.com/streadway/amqp"
 )
 
 const (
-	address = "amqp://localhost:5672/"
+	protocolo = "amqp"
+	address = "localhost"
+	port = "5672"
 )
 
-func failOnError(err error, msg string) {
-	if err != nil {
-		log.Fatalf("%s: %s", msg, err)
-	}
-}
-
 func main(){
-	conn, err := amqp.Dial(address)
+	conn, err := amqp.Dial(createDir(protocolo, address, port))
 	failOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
 
