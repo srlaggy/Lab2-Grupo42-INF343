@@ -9,6 +9,8 @@ import (
 	"strconv"
 )
 
+// POZO
+
 const (
 	protocolo = "amqp"
 	address = "localhost"

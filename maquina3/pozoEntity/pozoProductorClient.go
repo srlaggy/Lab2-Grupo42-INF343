@@ -5,6 +5,8 @@ import (
 	"strconv"
 )
 
+// LIDER
+
 const (
 	protocolo = "amqp"
 	address = "localhost"
@@ -18,14 +20,17 @@ func muertos(nroJugador int, nroRonda int) string{
 }
 
 func main(){
+	// Creamos conexion conn
 	conn, err := amqp.Dial(createDir(protocolo, address, port))
 	failOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
 
+	// Creamos canal ch
 	ch, err := conn.Channel()
 	failOnError(err, "Failed to open a channel")
 	defer ch.Close()
 
+	// Declaramos la cola q
 	q, err := ch.QueueDeclare(
 		"panaRabbit", // name
 		false,   // durable
@@ -37,6 +42,8 @@ func main(){
 	failOnError(err, "Failed to declare a queue")
 
 	body := muertos(10,4)
+
+	// routine
 	err = ch.Publish(
 	"",     // exchange
 	q.Name, // routing key
