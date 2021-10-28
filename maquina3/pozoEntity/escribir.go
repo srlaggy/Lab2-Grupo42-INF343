@@ -9,11 +9,6 @@ import (
 	"strconv"
 )
 
-func failOnError(err error, msg string) {
-	if err != nil {
-		log.Fatalf("%s: %s", msg, err)
-	}
-}
 
 func writePozo(dead string){
 	fileName := "pozo.txt"

@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/streadway/amqp"
+	"strconv"
 )
 
 const (
@@ -9,6 +10,12 @@ const (
 	address = "localhost"
 	port = "5672"
 )
+
+func muertos(nroJugador int, nroRonda int) string{
+	jugador := strconv.Itoa(nroJugador)
+	ronda := strconv.Itoa(nroRonda)
+	return "Jugador_" + jugador + " Ronda_" + ronda + " "
+}
 
 func main(){
 	conn, err := amqp.Dial(createDir(protocolo, address, port))
@@ -20,7 +27,7 @@ func main(){
 	defer ch.Close()
 
 	q, err := ch.QueueDeclare(
-		"hello", // name
+		"panaRabbit", // name
 		false,   // durable
 		false,   // delete when unused
 		false,   // exclusive
@@ -29,7 +36,7 @@ func main(){
 	)
 	failOnError(err, "Failed to declare a queue")
 
-	body := "Hello World!"
+	body := muertos(10,4)
 	err = ch.Publish(
 	"",     // exchange
 	q.Name, // routing key

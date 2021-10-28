@@ -9,6 +9,7 @@ build:
 	@go build -o bin/pozoServer.exe util.go pozoServer.go
 	@echo Terminado
 
+# asincronica
 build-rabbit:
 	@echo Construyendo pozoProductorClient.exe
 	@go build -o bin/pozoProductorClient.exe util.go pozoProductorClient.go
@@ -16,6 +17,7 @@ build-rabbit:
 	@go build -o bin/pozoConsumidorServer.exe util.go pozoConsumidorServer.go
 	@echo Terminado
 
+# sincronica
 build-grpc:
 	@echo Construyendo pozoClient.exe
 	@go build -o bin/pozoClient.exe util.go pozoClient.go
