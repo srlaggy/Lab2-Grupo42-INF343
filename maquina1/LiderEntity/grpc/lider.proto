@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option go_package = "lab/lider";
+
+package pozo;
+
+message MountReq{
+}
+
+message MountResp{
+    double monto = 1;
+}
+
+service PozoService{
+    rpc SendMount(MountReq) returns (MountResp);
+}

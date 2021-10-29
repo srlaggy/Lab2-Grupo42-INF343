@@ -8,7 +8,7 @@ import (
 	"fmt"
 
 	"google.golang.org/grpc"
-	pb "lab/pozo/pozo"
+	pb "lab/lider/grpc"
 )
 
 const (

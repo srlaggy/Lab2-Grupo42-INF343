@@ -41,7 +41,7 @@ func main(){
 	)
 	failOnError(err, "Failed to declare a queue")
 
-	body := muertos(10,4)
+	body := muertos(16,8)
 
 	// routine
 	err = ch.Publish(
