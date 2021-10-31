@@ -4,7 +4,7 @@
 
 build:
 	@echo Construyendo Pozo
-	@go build -o bin/pozoServer.exe pozoServer.go
+	@go build -o bin/pozo.exe pozo.go
 	@echo Terminado
 
 clean:
@@ -14,13 +14,13 @@ clean:
 
 run:
 	@echo Iniciando servidor Pozo
-	@bin/pozoServer.exe
+	@bin/pozo.exe
 
 all:
 	@echo Construyendo Pozo
-	@go build -o bin/pozoServer.exe pozoServer.go
+	@go build -o bin/pozo.exe pozo.go
 	@echo Iniciando servidor Pozo
-	@bin/pozoServer.exe
+	@bin/pozo.exe
 
 #############
 ### LINUX ###
@@ -28,7 +28,7 @@ all:
 
 # build:
 # @echo Construyendo Pozo
-# @go build -o bin/pozoServer pozoServer.go
+# @go build -o bin/pozo pozo.go
 # @echo Terminado
 
 # clean:
@@ -38,10 +38,10 @@ all:
 
 # run:
 # @echo Iniciando servidor Pozo
-# @./bin/pozoServer
+# @./bin/pozo
 
 # all:
 # @echo Construyendo Pozo
-# @go build -o bin/pozoServer pozoServer.go
+# @go build -o bin/pozo pozo.go
 # @echo Iniciando servidor Pozo
-# @./bin/pozoServer
+# @./bin/pozo

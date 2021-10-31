@@ -1,6 +1,10 @@
+###############
+### WINDOWS ###
+###############
+
 build:
 	@echo Construyendo lider
-	@go build -o bin/lider.exe util.go lider.go
+	@go build -o bin/lider.exe lider.go
 	@echo Terminado
 
 clean:
@@ -9,10 +13,35 @@ clean:
 	@echo Terminado
 
 run:
-	bin/lider.exe
+	@echo Iniciando servidor lider
+	@bin/lider.exe
 
 all:
 	@echo Construyendo lider
-	@go build -o bin/lider.exe util.go lider.go
+	@go build -o bin/lider.exe lider.go
 	@echo Iniciando servidor lider
 	@bin/lider.exe
+
+#############
+### LINUX ###
+#############
+
+# build:
+# @echo Construyendo lider
+# @go build -o bin/lider lider.go
+# @echo Terminado
+
+# clean:
+# @echo Eliminando archivos ejecutables
+# @rm bin/*
+# @echo Terminado
+
+# run:
+# @echo Iniciando servidor lider
+# @./bin/lider
+
+# all:
+# @echo Construyendo lider
+# @go build -o bin/lider lider.go
+# @echo Iniciando servidor lider
+# @./bin/lider

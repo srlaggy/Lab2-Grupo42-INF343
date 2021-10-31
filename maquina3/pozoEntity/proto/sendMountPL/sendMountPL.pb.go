@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.26.0
 // 	protoc        v3.19.0
-// source: pozo.proto
+// source: sendMountPL.proto
 
 package pozo
 
@@ -29,7 +29,7 @@ type MountReq struct {
 func (x *MountReq) Reset() {
 	*x = MountReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_pozo_proto_msgTypes[0]
+		mi := &file_sendMountPL_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -42,7 +42,7 @@ func (x *MountReq) String() string {
 func (*MountReq) ProtoMessage() {}
 
 func (x *MountReq) ProtoReflect() protoreflect.Message {
-	mi := &file_pozo_proto_msgTypes[0]
+	mi := &file_sendMountPL_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -55,7 +55,7 @@ func (x *MountReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MountReq.ProtoReflect.Descriptor instead.
 func (*MountReq) Descriptor() ([]byte, []int) {
-	return file_pozo_proto_rawDescGZIP(), []int{0}
+	return file_sendMountPL_proto_rawDescGZIP(), []int{0}
 }
 
 type MountResp struct {
@@ -69,7 +69,7 @@ type MountResp struct {
 func (x *MountResp) Reset() {
 	*x = MountResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_pozo_proto_msgTypes[1]
+		mi := &file_sendMountPL_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -82,7 +82,7 @@ func (x *MountResp) String() string {
 func (*MountResp) ProtoMessage() {}
 
 func (x *MountResp) ProtoReflect() protoreflect.Message {
-	mi := &file_pozo_proto_msgTypes[1]
+	mi := &file_sendMountPL_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -95,7 +95,7 @@ func (x *MountResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MountResp.ProtoReflect.Descriptor instead.
 func (*MountResp) Descriptor() ([]byte, []int) {
-	return file_pozo_proto_rawDescGZIP(), []int{1}
+	return file_sendMountPL_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *MountResp) GetMonto() float64 {
@@ -105,39 +105,39 @@ func (x *MountResp) GetMonto() float64 {
 	return 0
 }
 
-var File_pozo_proto protoreflect.FileDescriptor
+var File_sendMountPL_proto protoreflect.FileDescriptor
 
-var file_pozo_proto_rawDesc = []byte{
-	0x0a, 0x0a, 0x70, 0x6f, 0x7a, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x04, 0x70, 0x6f,
-	0x7a, 0x6f, 0x22, 0x0a, 0x0a, 0x08, 0x4d, 0x6f, 0x75, 0x6e, 0x74, 0x52, 0x65, 0x71, 0x22, 0x21,
-	0x0a, 0x09, 0x4d, 0x6f, 0x75, 0x6e, 0x74, 0x52, 0x65, 0x73, 0x70, 0x12, 0x14, 0x0a, 0x05, 0x6d,
-	0x6f, 0x6e, 0x74, 0x6f, 0x18, 0x01, 0x20, 0x01, 0x28, 0x01, 0x52, 0x05, 0x6d, 0x6f, 0x6e, 0x74,
-	0x6f, 0x32, 0x3b, 0x0a, 0x0b, 0x50, 0x6f, 0x7a, 0x6f, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
-	0x12, 0x2c, 0x0a, 0x09, 0x53, 0x65, 0x6e, 0x64, 0x4d, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x0e, 0x2e,
-	0x70, 0x6f, 0x7a, 0x6f, 0x2e, 0x4d, 0x6f, 0x75, 0x6e, 0x74, 0x52, 0x65, 0x71, 0x1a, 0x0f, 0x2e,
-	0x70, 0x6f, 0x7a, 0x6f, 0x2e, 0x4d, 0x6f, 0x75, 0x6e, 0x74, 0x52, 0x65, 0x73, 0x70, 0x42, 0x0a,
-	0x5a, 0x08, 0x6c, 0x61, 0x62, 0x2f, 0x70, 0x6f, 0x7a, 0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x33,
+var file_sendMountPL_proto_rawDesc = []byte{
+	0x0a, 0x11, 0x73, 0x65, 0x6e, 0x64, 0x4d, 0x6f, 0x75, 0x6e, 0x74, 0x50, 0x4c, 0x2e, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x12, 0x04, 0x70, 0x6f, 0x7a, 0x6f, 0x22, 0x0a, 0x0a, 0x08, 0x4d, 0x6f, 0x75,
+	0x6e, 0x74, 0x52, 0x65, 0x71, 0x22, 0x21, 0x0a, 0x09, 0x4d, 0x6f, 0x75, 0x6e, 0x74, 0x52, 0x65,
+	0x73, 0x70, 0x12, 0x14, 0x0a, 0x05, 0x6d, 0x6f, 0x6e, 0x74, 0x6f, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x01, 0x52, 0x05, 0x6d, 0x6f, 0x6e, 0x74, 0x6f, 0x32, 0x3b, 0x0a, 0x0b, 0x50, 0x6f, 0x7a, 0x6f,
+	0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x2c, 0x0a, 0x09, 0x53, 0x65, 0x6e, 0x64, 0x4d,
+	0x6f, 0x75, 0x6e, 0x74, 0x12, 0x0e, 0x2e, 0x70, 0x6f, 0x7a, 0x6f, 0x2e, 0x4d, 0x6f, 0x75, 0x6e,
+	0x74, 0x52, 0x65, 0x71, 0x1a, 0x0f, 0x2e, 0x70, 0x6f, 0x7a, 0x6f, 0x2e, 0x4d, 0x6f, 0x75, 0x6e,
+	0x74, 0x52, 0x65, 0x73, 0x70, 0x42, 0x0a, 0x5a, 0x08, 0x6c, 0x61, 0x62, 0x2f, 0x70, 0x6f, 0x7a,
+	0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
-	file_pozo_proto_rawDescOnce sync.Once
-	file_pozo_proto_rawDescData = file_pozo_proto_rawDesc
+	file_sendMountPL_proto_rawDescOnce sync.Once
+	file_sendMountPL_proto_rawDescData = file_sendMountPL_proto_rawDesc
 )
 
-func file_pozo_proto_rawDescGZIP() []byte {
-	file_pozo_proto_rawDescOnce.Do(func() {
-		file_pozo_proto_rawDescData = protoimpl.X.CompressGZIP(file_pozo_proto_rawDescData)
+func file_sendMountPL_proto_rawDescGZIP() []byte {
+	file_sendMountPL_proto_rawDescOnce.Do(func() {
+		file_sendMountPL_proto_rawDescData = protoimpl.X.CompressGZIP(file_sendMountPL_proto_rawDescData)
 	})
-	return file_pozo_proto_rawDescData
+	return file_sendMountPL_proto_rawDescData
 }
 
-var file_pozo_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_pozo_proto_goTypes = []interface{}{
+var file_sendMountPL_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_sendMountPL_proto_goTypes = []interface{}{
 	(*MountReq)(nil),  // 0: pozo.MountReq
 	(*MountResp)(nil), // 1: pozo.MountResp
 }
-var file_pozo_proto_depIdxs = []int32{
+var file_sendMountPL_proto_depIdxs = []int32{
 	0, // 0: pozo.PozoService.SendMount:input_type -> pozo.MountReq
 	1, // 1: pozo.PozoService.SendMount:output_type -> pozo.MountResp
 	1, // [1:2] is the sub-list for method output_type
@@ -147,13 +147,13 @@ var file_pozo_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_pozo_proto_init() }
-func file_pozo_proto_init() {
-	if File_pozo_proto != nil {
+func init() { file_sendMountPL_proto_init() }
+func file_sendMountPL_proto_init() {
+	if File_sendMountPL_proto != nil {
 		return
 	}
 	if !protoimpl.UnsafeEnabled {
-		file_pozo_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_sendMountPL_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MountReq); i {
 			case 0:
 				return &v.state
@@ -165,7 +165,7 @@ func file_pozo_proto_init() {
 				return nil
 			}
 		}
-		file_pozo_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_sendMountPL_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MountResp); i {
 			case 0:
 				return &v.state
@@ -182,18 +182,18 @@ func file_pozo_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_pozo_proto_rawDesc,
+			RawDescriptor: file_sendMountPL_proto_rawDesc,
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_pozo_proto_goTypes,
-		DependencyIndexes: file_pozo_proto_depIdxs,
-		MessageInfos:      file_pozo_proto_msgTypes,
+		GoTypes:           file_sendMountPL_proto_goTypes,
+		DependencyIndexes: file_sendMountPL_proto_depIdxs,
+		MessageInfos:      file_sendMountPL_proto_msgTypes,
 	}.Build()
-	File_pozo_proto = out.File
-	file_pozo_proto_rawDesc = nil
-	file_pozo_proto_goTypes = nil
-	file_pozo_proto_depIdxs = nil
+	File_sendMountPL_proto = out.File
+	file_sendMountPL_proto_rawDesc = nil
+	file_sendMountPL_proto_goTypes = nil
+	file_sendMountPL_proto_depIdxs = nil
 }
