@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+//option go_package = "lab/pozo";
+
+package dataNode;
+
+message devolverJugadas{
+    int[] jugadas = 1;
+    //No parece ser el formato adecuado
+}
+
+message solicitarJugadas{
+}
+
+service PozoService{
+    rpc SendJugadas(devolverJugadas) returns (solicitarJugadas);
+}

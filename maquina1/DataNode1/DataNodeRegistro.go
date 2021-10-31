@@ -1,20 +1,26 @@
 package main
 
+// Datnode
+
 import (
 	"bufio"
 	"os"
 	"strconv"
 )
 
+func main() {
+    
+}
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Función: crearRegistro
+// Función: crearRegistroJugadas
 // -> Genera el registro de un jugador por primera vez en la
 // ronda
 // Recibe: el jugador y la ronda, ambos como string
 // Retorna: Nada
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
-func crearRegistro(jugador string, ronda string){
+func crearRegistroJugadas(jugador string, ronda string){
 
 	//TO-DO: Redefinir el input en caso de ser necesario
 	//TO-DO: En caso de redefinir el input hacer de ronda y
@@ -36,7 +42,7 @@ func crearRegistro(jugador string, ronda string){
 // Retorna: Nada
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
-func RegistrarJugada(jugador string, ronda string, jugada string){
+func registrarJugada(jugador string, ronda string, jugada string){
 
 	//TO-DO: Redefinir el input en caso de ser necesario
 	//TO-DO: En caso de redefinir el input hacer de ronda y
@@ -66,7 +72,7 @@ func RegistrarJugada(jugador string, ronda string, jugada string){
 // en el mismo orden en que se registraron
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-func DevolverJugadas(jugador string, ronda string) []int{
+func devolverJugadas(jugador string, ronda string) []int{
 
 	
 	var jugadas []int

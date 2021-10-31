@@ -1,3 +1,22 @@
 {
-    "conventionalCommits.scopes": ["DataNode"]
+    "conventionalCommits.scopes": ["DataNode"],
+    "workbench.colorCustomizations": {
+        "activityBar.activeBackground": "#998df1",
+        "activityBar.activeBorder": "#fce6e3",
+        "activityBar.background": "#998df1",
+        "activityBar.foreground": "#15202b",
+        "activityBar.inactiveForeground": "#15202b99",
+        "activityBarBadge.background": "#fce6e3",
+        "activityBarBadge.foreground": "#15202b",
+        "editorGroup.border": "#998df1",
+        "panel.border": "#998df1",
+        "sash.hoverBorder": "#998df1",
+        "sideBar.border": "#998df1",
+        "tab.activeBorder": "#998df1",
+        "titleBar.activeBackground": "#7060eb",
+        "titleBar.activeForeground": "#e7e7e7",
+        "titleBar.inactiveBackground": "#7060eb99",
+        "titleBar.inactiveForeground": "#e7e7e799"
+    },
+    "peacock.color": "#7060eb"
 }
