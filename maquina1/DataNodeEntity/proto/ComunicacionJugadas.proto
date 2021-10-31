@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-//option go_package = "lab/pozo";
+option go_package = "lab/dataNode";
 
 package dataNode;
 
