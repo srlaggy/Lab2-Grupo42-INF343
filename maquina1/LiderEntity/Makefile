@@ -9,7 +9,7 @@ clean:
 	@echo Terminado
 
 run:
-	bin/liderMuertos.exe
+	bin/lider.exe
 
 all:
 	@echo Construyendo lider

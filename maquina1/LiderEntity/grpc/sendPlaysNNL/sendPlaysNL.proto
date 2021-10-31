@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+option go_package = "lab/lider";
+
+package sendPlaysNL;
+
+message sendPlays{
+    string plays = 1;
+}
+
+service Plays{
+    rpc sendPlays(MountReq) returns (MountResp);
+}
