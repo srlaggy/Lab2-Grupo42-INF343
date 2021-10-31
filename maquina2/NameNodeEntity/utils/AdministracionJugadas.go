@@ -2,12 +2,6 @@ package main
 
 // Datnode
 
-import (
-	"bufio"
-	"os"
-	"strconv"
-)
-
 func main() {
     
 }
@@ -37,78 +31,37 @@ func elegirDataNode(jugador string, ronda string) string {
 	return ip
 }
 
-func entregarJugada(){
-
-}
-
-func solicitarJugadas(){}
-
-func devolverJugadasRondas(){}
-
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Función: RegistrarJugada
-// -> Escribe una nueva jugada para un jugador y una ronda dados
-// Recibe: el jugador, la ronda y la jugada, todos como string
+// Función: entregarJugada
+// -> Localiza la ubicación de una combinación de jugador y
+// ronda y envia la jugada a ese dataNode, en caso de no existir
+// dicha combinación llama a "elegirDataNode"
+// Recibe: jugador string, ronda string y jugada como string
 // Retorna: Nada
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  
-func registrarJugada(jugador string, ronda string, jugada string){
 
-	//TO-DO: Redefinir el input en caso de ser necesario
-	//TO-DO: En caso de redefinir el input hacer de ronda y
-	//jugador textos
-	//NOTE: jugador_n__ronda_m.txt
-	
-	//Se abre el archivo
-	var fileName string = jugador + "__" + ronda + ".txt"
-	file, error1 := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	//?: ¿Que es 0644?
+func entregarJugada(jugador string, ronda string, jugada string){
 
-	//FIXME: undeclared name: failOnError
-
-	JugadaARegistar :=  jugada + "\n"
-	_, error2 := file.WriteString(JugadaARegistar)
-
-	
-	defer file.Close()
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Función: DevolverJugadas
-// -> Recibe un jugador y una ronda y devulve las jugadas
-// presentes en el archivo correspondiente al input recibido
-// Recibe: el jugador y la ronda todos como string
-// Retorna: Un arreglo de enteros con las jugadas ordenadas
-// en el mismo orden en que se registraron
+// Función: solicitarJugadasRonda
+// -> Dada un jugador y una ubicación solicita las jugadas de
+// dicho jugador al dataNode.
+// Recibe: jugador string, ronda string, ip String
+// Retorna: Nada
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-func devolverJugadas(jugador string, ronda string) []int{
 
-	
-	var jugadas []int
-	var jugada string
-	
-	//TO-DO: Redefinir el input en caso de ser necesario
-	//TO-DO: En caso de redefinir el input hacer de ronda y
-	//jugador textos
-	//NOTE: jugador_n__ronda_m.txt
-	
-	//Se abre el archivo
-	var fileName string = jugador + "__" + ronda + ".txt"
-	file, error1 := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+func solicitarJugadasRonda(jugador string, ronda string, ip string) {}
 
-	//FIXME: undeclared name: failOnError
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Función: devolverJugadasRondas
+// -> Localiza la ubicación de todos los registros de un jugador
+// dado para así lograr comunicar todas las jugadas de un jugador
+// al líder.
+// Recibe: jugador string
+// Retorna: todas las jugadas de un jugador
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+func devolverJugadasRondas(jugador string) []int{}
 
-	scanner := bufio.NewScanner(file)
-
-	//Recorrer el archivo para registrar las jugadas una a una
-    for scanner.Scan(){
-		jugada = scanner.Text()
-		jugadaInt,err := strconv.Atoi(jugada)
-		jugadas = append(jugadas, jugadaInt)
-    }
-
-	
-	defer file.Close()
-	return jugadas
-}

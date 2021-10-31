@@ -1,5 +1,5 @@
 {
-    "conventionalCommits.scopes": ["DataNode"],
+    "conventionalCommits.scopes": ["DataNode", "NameNode"],
     "workbench.colorCustomizations": {
         "activityBar.activeBackground": "#998df1",
         "activityBar.activeBorder": "#fce6e3",
