@@ -1,6 +1,21 @@
 package main
 
+import "os"
+
 // Datnode
+
+/* import(
+    "context"
+    "log"
+    "net"
+    "time"
+    "fmt"
+	"math/rand"
+    "google.golang.org/grpc"
+	"bufio"
+	"os"
+	"strconv"
+) */
 
 func main() {
     
@@ -14,7 +29,12 @@ func main() {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
 func iniciarRegistroJugadas(){
-
+	//Se crea el archivo
+	var fileName string =  "jugadas.txt"
+	file, err := os.Create(fileName)
+	//failOnError(err, "Failed to create file")
+	//FIXME: undeclared name: failOnError
+	defer file.Close()
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -27,8 +47,19 @@ func iniciarRegistroJugadas(){
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 func elegirDataNode(jugador string, ronda string) string {
-	ip = "0"
+	Direcciones = ["1", "2", "3"]
+	//TO-DO: Reemplazar por las direcciones ip de los pcs de la u
+	var seleccionada int= rand.Intn(3)
+	ip = Direcciones[seleccionada]
+	var lineContent string =  jugador + " " + ronda + " " + ip
+	var fileName string = "jugadas.txt"
+	file, error1 := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	_, error2 := file.WriteString(lineContent)
 	return ip
+}
+
+func iniciarDataNode(jugador string, ronda string, ip string){
+	//Enviar estos datos al datanode con el ip dado
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -37,10 +68,13 @@ func elegirDataNode(jugador string, ronda string) string {
 // ronda y envia la jugada a ese dataNode, en caso de no existir
 // dicha combinación llama a "elegirDataNode"
 // Recibe: jugador string, ronda string y jugada como string
-// Retorna: Nada
+// Retorna: jugador string, ronda string y jugada como string
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-func entregarJugada(jugador string, ronda string, jugada string){
+func entregarJugada(jugador string, ronda string, jugada string)(jugador string, ronda string, jugada string){
+	var lineContent string =  jugador + " " + ronda
+	var fileName string = "jugadas.txt"
+	file, error1 := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 
 }
 
@@ -53,7 +87,7 @@ func entregarJugada(jugador string, ronda string, jugada string){
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-func solicitarJugadasRonda(jugador string, ronda string, ip string) {}
+func solicitarJugadasRonda(jugador string, ronda string) {}
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Función: devolverJugadasRondas
