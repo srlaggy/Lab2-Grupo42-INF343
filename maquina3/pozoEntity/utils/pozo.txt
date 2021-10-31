@@ -11,3 +11,6 @@ Jugador_10 Ronda_4 9000000
 Jugador_10 Ronda_4 10000000
 Jugador_10 Ronda_4 11000000
 Jugador_16 Ronda_8 12000000
+Jugador_16 Ronda_8 13000000
+Jugador_16 Ronda_8 14000000
+Jugador_16 Ronda_8 15000000

@@ -14,6 +14,7 @@ import (
 	"google.golang.org/grpc"
 	"github.com/streadway/amqp"
 	pb "lab/pozo/pozo"
+	ut "lab/pozo/utils"
 )
 
 const (
@@ -24,7 +25,6 @@ const (
 	port_amqp = "5672"
 	montoMuerto = 1000000
 	fileName = "utils/pozo.txt"
-	
 )
 
 // --------------- FUNCIONES GRPC --------------- //
@@ -37,6 +37,16 @@ func (s *server) SendMount(ctx context.Context, in *pb.MountReq) (*pb.MountResp,
 	return &pb.MountResp{Monto: 1234567890}, nil
 }
 
+func grpc_func() {
+	lis, err := net.Listen(protocolo_grpc, ":"+port_grpc)
+	ut.FailOnError(err, "Failed to listen")
+
+	s := grpc.NewServer()
+	pb.RegisterPozoServiceServer(s, &server{})
+	log.Printf("Servidor grpc escuchando en el puerto %v", port_grpc)
+	ut.FailOnError(s.Serve(lis), "Failed to serve")
+
+}
 
 // --------------- FUNCIONES RABBITMQ --------------- //
 // Funcion que agrega un muerto al pozo
@@ -48,7 +58,7 @@ func writePozo(dead string){
 
 	// Abrimos archivo en modo append
     f, err := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	failOnError(err, "Failed to open file")
+	ut.FailOnError(err, "Failed to open file")
 	defer f.Close()
 	
 	// string formateado
@@ -56,13 +66,13 @@ func writePozo(dead string){
 
 	// Escribimos en archivo
 	_, err1 := f.WriteString(newDead)
-	failOnError(err1, "Failed to write file")
+	ut.FailOnError(err1, "Failed to write file")
 }
 
 // Funcion que retorna el monto acumulado del pozo
 func getMountPozo() int{
 	f, err := os.Open(fileName)
-	failOnError(err, "Failed to open file")
+	ut.FailOnError(err, "Failed to open file")
     defer f.Close()
 
     scanner := bufio.NewScanner(f)
@@ -70,54 +80,34 @@ func getMountPozo() int{
     for scanner.Scan(){
 		auxLine = scanner.Text()
     }
-	failOnError(scanner.Err(), "Failed to read file")
+	ut.FailOnError(scanner.Err(), "Failed to read file")
 
 	mount := strings.Split(auxLine, " ")[2]
 	mountInt,err := strconv.Atoi(mount)
-	failOnError(err, "Failed to transform to int")
+	ut.FailOnError(err, "Failed to transform to int")
 	return mountInt
 }
 
 // Funcion que reinicia el pozo con monto 0
 func resetPozo(){
 	f, err := os.Create(fileName)
-	failOnError(err, "Failed to create file")
+	ut.FailOnError(err, "Failed to create file")
     defer f.Close()
 	
 	_, err2 := f.WriteString("Jugador_0 Ronda_0 0\n")
-	failOnError(err2, "Failed to write file")
+	ut.FailOnError(err2, "Failed to write file")
 }
 
-
-// --------------- FUNCION MAIN --------------- //
-
-func grpc_func() {
-	lis, err := net.Listen(protocolo_grpc, ":"+port_grpc)
-	failOnError(err, "Failed to listen")
-
-	s := grpc.NewServer()
-	pb.RegisterPozoServiceServer(s, &server{})
-	log.Printf("Servidor grpc escuchando en el puerto %v", port_grpc)
-	failOnError(s.Serve(lis), "Failed to serve")
-
-}
-
-func main() {
-
-
-	// ----- GRPC ----- //
-	go grpc_func()
-
-	
+func amqp_func(){
 	// ----- RABBITMQ ----- //
 	// Creacion de conexion
-	conn, err := amqp.Dial(createDir(protocolo_amqp, address, port_amqp))
-	failOnError(err, "Failed to connect to RabbitMQ")
+	conn, err := amqp.Dial(ut.CreateDir(protocolo_amqp, address, port_amqp))
+	ut.FailOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
 
 	// Creacion de canal
 	ch, err := conn.Channel()
-	failOnError(err, "Failed to open a channel")
+	ut.FailOnError(err, "Failed to open a channel")
 	defer ch.Close()
 
 	// Declaracion de cola
@@ -129,7 +119,7 @@ func main() {
 		false,   // no-wait
 		nil,     // arguments
 	)
-	failOnError(err, "Failed to declare a queue")
+	ut.FailOnError(err, "Failed to declare a queue")
 
 	// Consumiendo canal
 	msgs, err := ch.Consume(
@@ -141,7 +131,7 @@ func main() {
 		false,  // no-wait
 		nil,    // args
 	)
-	failOnError(err, "Failed to register a consumer")
+	ut.FailOnError(err, "Failed to register a consumer")
 	forever := make(chan bool)
 
 	// routine
@@ -153,7 +143,15 @@ func main() {
 	}()
 	log.Printf("Servidor rabbitmq escuchando en el puerto %v", port_amqp)
 	<-forever
+}
 
 
+// --------------- FUNCION MAIN --------------- //
 
+func main() {
+    // ----- GRPC ----- //
+    go grpc_func()
+
+    // ----- RABBITMQ ----- //
+    amqp_func()
 }

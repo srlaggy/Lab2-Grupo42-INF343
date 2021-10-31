@@ -1,10 +1,10 @@
-package main
+package utils
 
 import (
 	"log"
 )
 
-func createDir(protocolo string, address string, port string) string{
+func CreateDir(protocolo string, address string, port string) string{
 	if protocolo == ""{
 		return address + ":" + port
 	} else if address == ""{
@@ -14,7 +14,7 @@ func createDir(protocolo string, address string, port string) string{
 	}
 }
 
-func failOnError(err error, msg string) {
+func FailOnError(err error, msg string) {
 	if err != nil {
 		log.Fatalf("%s: %s", msg, err)
 	}
