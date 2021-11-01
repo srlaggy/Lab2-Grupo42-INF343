@@ -1,8 +1,20 @@
 package main
 
-import "os"
 
 // Datnode
+
+import(
+    "context"
+    "log"
+    "net"
+    "time"
+    "fmt"
+	"math/rand"
+    "google.golang.org/grpc"
+	"bufio"
+	"os"
+	"strconv"
+)
 
 /* import(
     "context"
@@ -61,7 +73,7 @@ func elegirDataNode(jugador string, ronda string) string {
 }
 
 func iniciarDataNode(jugador string, ronda string){
-	ip = elegirDataNode(jugador string, ronda string)
+	ip = elegirDataNode(jugador, ronda)
 	//TO-DO: Revisar si se hace así
 }
 
@@ -74,13 +86,12 @@ func iniciarDataNode(jugador string, ronda string){
 // Recibe: jugador string, ronda string y jugada como string
 // Retorna: jugador string, ronda string y jugada como string
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-func encontrarDataNode(jugador string, ronda string) string ip{
-	var ip string
+func encontrarDataNode(jugador string, ronda string, flag bool) string{
+	ip = "No hay jugadas"
 	file, error1 := os.OpenFile("jugadas.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	scanner := bufio.NewScanner(f)
-	scanner := bufio.NewScanner(file)
-	flag = false
-    for scanner.Scan(){
+	var scanner := bufio.NewScanner(file)
+    
+	for scanner.Scan(){
 		ubicacion = scanner.Text()
 		s := strings.Fields(ubicacion)
 		if(jugador == s[0]){
@@ -112,7 +123,7 @@ func entregarJugada(dato string) string {
 	file, error1 := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	
 	s := strings.Fields(dato)
-	ip = encontrarDataNode(dato[0], dato[1])
+	ip = encontrarDataNode(dato[0], dato[1], false)
 
 	return dato
 
@@ -127,8 +138,12 @@ func entregarJugada(dato string) string {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-func solicitarJugadasRondas(jugador string, ronda string) int []{
-		ip = encontrarDataNode(jugador, i)
+func solicitarJugadasRondas(jugador string, ronda string) string{
+		ip = encontrarDataNode(jugador, i, true)
+		if(ip == "No hay jugadas"){
+			return ip
+		}
+		return "Texto de reemplazo"
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -140,10 +155,15 @@ func solicitarJugadasRondas(jugador string, ronda string) int []{
 // Retorna: todas las jugadas de un jugador
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 func devolverJugadasRondas(jugador string) string{
+	var jugadas string = ""
 	
 	for i < 3{
 		i++
 		valores = solicitarJugadasRondas(jugador, i)
+		num, err := strconv.Atoi(age)
+		ronda = "Juego " + num + ": " 
+		jugadas = jugadas + ronda + valores + "\n"
 	}
+	return jugadas
 }
 

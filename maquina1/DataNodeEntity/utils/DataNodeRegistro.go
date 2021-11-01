@@ -11,7 +11,6 @@ import (
 	   "google.golang.org/grpc" */
 	"bufio"
 	"os"
-	"strconv"
 )
 
 func main() {
@@ -78,10 +77,10 @@ func registrarJugada(jugador string, ronda string, jugada string){
 // en el mismo orden en que se registraron
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-func devolverJugadas(jugador string, ronda string) []int{
+func devolverJugadas(jugador string, ronda string) string{
 
 	
-	var jugadas []int
+	var jugadas string = ""
 	var jugada string
 	
 	//TO-DO: Redefinir el input en caso de ser necesario
@@ -100,8 +99,7 @@ func devolverJugadas(jugador string, ronda string) []int{
 	//Recorrer el archivo para registrar las jugadas una a una
     for scanner.Scan(){
 		jugada = scanner.Text()
-		jugadaInt,err := strconv.Atoi(jugada)
-		jugadas = append(jugadas, jugadaInt)
+		jugadas = jugadas + jugada + " "
     }
 
 	
