@@ -7,7 +7,7 @@
 // 	ut.FailOnError(err2, "Failed to write file")
 // }
 
-package receiveDeadLP
+package receiveDeadPL
 
 import (
 	"log"

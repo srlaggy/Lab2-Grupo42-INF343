@@ -13,13 +13,13 @@ clean:
 	@echo Terminado
 
 run:
-	@echo Iniciando servidor lider
+	@echo Iniciando Lider
 	@bin/lider.exe
 
 all:
 	@echo Construyendo lider
 	@go build -o bin/lider.exe lider.go
-	@echo Iniciando servidor lider
+	@echo Iniciando Lider
 	@bin/lider.exe
 
 #############
@@ -37,11 +37,11 @@ all:
 # @echo Terminado
 
 # run:
-# @echo Iniciando servidor lider
+# @echo Iniciando Lider
 # @./bin/lider
 
 # all:
 # @echo Construyendo lider
 # @go build -o bin/lider lider.go
-# @echo Iniciando servidor lider
+# @echo Iniciando Lider
 # @./bin/lider

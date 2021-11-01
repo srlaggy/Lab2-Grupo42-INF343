@@ -97,5 +97,5 @@ var PozoService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "lider.proto",
+	Metadata: "sendMountPL.proto",
 }
