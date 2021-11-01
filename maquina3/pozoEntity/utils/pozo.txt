@@ -35,3 +35,6 @@ Jugador_13 Ronda_4 33000000
 Jugador_13 Ronda_4 34000000
 Jugador_13 Ronda_4 35000000
 Jugador_13 Ronda_4 36000000
+Jugador_13 Ronda_4 37000000
+Jugador_13 Ronda_4 38000000
+Jugador_13 Ronda_4 39000000

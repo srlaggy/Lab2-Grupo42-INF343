@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option go_package = "lab/jugador";
+
+package requestGameLJ;
+
+message GameReq{
+    string entryMsg = 1;
+}
+
+message GameResp{
+    string gameMsg = 1;
+}
+
+service RequestGameService{
+    rpc RequestGame(GameReq) returns (GameResp);
+}

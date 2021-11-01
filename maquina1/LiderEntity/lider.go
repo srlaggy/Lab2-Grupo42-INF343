@@ -7,6 +7,7 @@ import (
 	rm "lab/lider/src/requestMountPL"
 	sd "lab/lider/src/sendDeadPL"
 	pr "lab/lider/src/playerRecordNL"
+	rg "lab/lider/src/sendGameLJ"
 	"time"
 )
 
@@ -22,6 +23,9 @@ func main(){
 
 	// ----- FUNCIÓN: solicitar registro de jugadores al NameNode ----- //
 	go pr.PlayerRecordLider("Jugador_1")
+
+	// ----- FUNCIÓN: recibir entradas de jugadores al juego ----- //
+	go rg.Grpc_func()
 
 	// ----- FUNCIÓN: enviar los jugadores eliminados al pozo ----- //
 	sd.SendDead_amqp()
