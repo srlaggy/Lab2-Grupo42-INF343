@@ -35,7 +35,7 @@ func crearRegistroJugadas(jugador string, ronda string){
 	//Se crea el archivo
 	var fileName string = jugador + "__" + ronda + ".txt"
 	file, err := os.Create(fileName)
-	//failOnError(err, "Failed to create file")
+	//FailOnError(err, "Failed to create file")
 	//FIXME: undeclared name: failOnError
 	defer file.Close()
 }
@@ -77,7 +77,7 @@ func registrarJugada(jugador string, ronda string, jugada string){
 // en el mismo orden en que se registraron
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-func devolverJugadas(jugador string, ronda string) string{
+func DevolverJugadas(jugador string, ronda string) string{
 
 	
 	var jugadas string = ""

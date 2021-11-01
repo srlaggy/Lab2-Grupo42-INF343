@@ -1,33 +1,20 @@
 package main
 
-
 // Datnode
 
-import(
-    "context"
-    "log"
-    "net"
-    "time"
-    "fmt"
-	"math/rand"
-    "google.golang.org/grpc"
+import (
+	/* "context"
+	"log"
+	"net"
+	"time"
+	"fmt"
+	"google.golang.org/grpc" */
 	"bufio"
+	"math/rand"
 	"os"
 	"strconv"
+	"strings"
 )
-
-/* import(
-    "context"
-    "log"
-    "net"
-    "time"
-    "fmt"
-	"math/rand"
-    "google.golang.org/grpc"
-	"bufio"
-	"os"
-	"strconv"
-) */
 
 func main() {
     
@@ -45,7 +32,6 @@ func iniciarRegistroJugadas(){
 	var fileName string =  "jugadas.txt"
 	file, err := os.Create(fileName)
 	//failOnError(err, "Failed to create file")
-	//FIXME: undeclared name: failOnError
 	defer file.Close()
 }
 
@@ -59,10 +45,10 @@ func iniciarRegistroJugadas(){
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 func elegirDataNode(jugador string, ronda string) string {
-	Direcciones := [3]int{"1", "2", "3"}
+	Direcciones := [3]string{"1", "2", "3"}
 	//TO-DO: Reemplazar por las direcciones ip de los pcs de la u,
 	// o las direcciones de prueba segun sea el caso
-	
+	var ip string
 	var seleccionada int= rand.Intn(3)
 	ip = Direcciones[seleccionada]
 	var lineContent string =  jugador + " " + ronda + " " + ip + "\n"
@@ -73,6 +59,7 @@ func elegirDataNode(jugador string, ronda string) string {
 }
 
 func iniciarDataNode(jugador string, ronda string){
+	var ip string
 	ip = elegirDataNode(jugador, ronda)
 	//TO-DO: Revisar si se hace así
 }
@@ -87,10 +74,11 @@ func iniciarDataNode(jugador string, ronda string){
 // Retorna: jugador string, ronda string y jugada como string
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 func encontrarDataNode(jugador string, ronda string, flag bool) string{
-	ip = "No hay jugadas"
+	var ip string= "No hay jugadas"
 	file, error1 := os.OpenFile("jugadas.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	var scanner := bufio.NewScanner(file)
-    
+	//FailOnError(error1, "Failed to open file")
+	scanner := bufio.NewScanner(file)
+	var ubicacion string
 	for scanner.Scan(){
 		ubicacion = scanner.Text()
 		s := strings.Fields(ubicacion)
@@ -118,19 +106,18 @@ func encontrarDataNode(jugador string, ronda string, flag bool) string{
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 func entregarJugada(dato string) string {
-	var lineContent string =  jugador + " " + ronda
-	var fileName string = "jugadas.txt"
-	file, error1 := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	
+	var ip string
+
 	s := strings.Fields(dato)
-	ip = encontrarDataNode(dato[0], dato[1], false)
+	ip = encontrarDataNode(s[0], s[1], false)
 
 	return dato
 
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Función: solicitarJugadasRonda
+// Función: SolicitarJugadas
 // -> Dada un jugador y una ubicación solicita las jugadas de
 // dicho jugador al dataNode.
 // Recibe: jugador string, ronda string, ip String
@@ -138,8 +125,9 @@ func entregarJugada(dato string) string {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-func solicitarJugadasRondas(jugador string, ronda string) string{
-		ip = encontrarDataNode(jugador, i, true)
+func SolicitarJugadas(jugador string, ronda string) string{
+		
+	ip := encontrarDataNode(jugador, ronda, true)
 		if(ip == "No hay jugadas"){
 			return ip
 		}
@@ -154,14 +142,15 @@ func solicitarJugadasRondas(jugador string, ronda string) string{
 // Recibe: jugador string
 // Retorna: todas las jugadas de un jugador
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-func devolverJugadasRondas(jugador string) string{
+func DevolverJugadasRondas(jugador string) string{
 	var jugadas string = ""
+	var i int = 0
 	
 	for i < 3{
 		i++
-		valores = solicitarJugadasRondas(jugador, i)
-		num, err := strconv.Atoi(age)
-		ronda = "Juego " + num + ": " 
+		num := strconv.Itoa(i)
+		valores := SolicitarJugadas(jugador, num)
+		ronda := "Juego " + num + ": " 
 		jugadas = jugadas + ronda + valores + "\n"
 	}
 	return jugadas
