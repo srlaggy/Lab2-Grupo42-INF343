@@ -9,8 +9,9 @@ import (
 	"github.com/streadway/amqp"
 	"strconv"
 	"google.golang.org/grpc"
-	pb "lab/lider/grpc"
+	rm "lab/lider/grpc"
 	ut "lab/lider/utils"
+	sp "lab/lider/grpc/sendPlaysNL"
 )
 
 const (
@@ -19,12 +20,12 @@ const (
 	port_rabbit = "5672"
 	protocolo_grpc = ""
 	port_grpc1 = "60000"
-	port_grpc2 = "70000"
+	port_grpc2 = "60001"
 )
 
 // --------------- FUNCIONES RABBITMQ --------------- //
 
-// ------ ACCIÓN: enviar los jugadores eliminados al pozo ----- //
+// ------ FUNCIÓN: enviar los jugadores eliminados al pozo ----- // --> Lider actua como productor
 
 func muertos(nroJugador int, nroRonda int) string{
 	jugador := strconv.Itoa(nroJugador)
@@ -71,38 +72,38 @@ func amqp_func() {
 
 // --------------- FUNCIONES GRPC --------------- //
 
-// ----- ACCIÓN: pedir monto acumulado al pozo ----- //
+// ----- FUNCIÓN: pedir monto acumulado al pozo ----- // --> Lider actua como cliente
 
-func grpc_func() {
+func requestMount() {
 	// Set up a connection to the server.
 	conn1, err := grpc.Dial(ut.CreateDir(protocolo_grpc, address, port_grpc1), grpc.WithInsecure(), grpc.WithBlock())
 	ut.FailOnError(err, "Failed to create a connection")
 	defer conn1.Close()
 
-	c := pb.NewPozoServiceClient(conn1)
+	c := rm.NewPozoServiceClient(conn1)
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	r, err := c.SendMount(ctx, &pb.MountReq{})
+	r, err := c.SendMount(ctx, &rm.MountReq{})
 	ut.FailOnError(err, "Failed to send a mount")
-	fmt.Println("El pozo tiene un monto de: %d", r.GetMonto())
+	fmt.Printf("El pozo tiene un monto de: %.f", r.GetMonto())
 }
 
-// ----- ACCIÓN: enviar jugadas al NameNode ----- //
-func enviarJugadasNameNode(jugada string) {
-	// // Set up a connection to the server.
-	// conn3, err := grpc.Dial(ut.CreateDir(protocolo_grpc, address, port_grpc2), grpc.WithInsecure(), grpc.WithBlock())
-	// ut.FailOnError(err, "Failed to create a connection")
-	// defer conn3.Close()
+// ----- FUNCIÓN: enviar jugadas al NameNode ----- // --> Lider actua como cliente
+func sendPlaysLider(jugada string) {
+	// Creamos conexion
+	conn3, err := grpc.Dial(ut.CreateDir(protocolo_grpc, address, port_grpc2), grpc.WithInsecure(), grpc.WithBlock())
+	ut.FailOnError(err, "Failed to create a connection")
+	defer conn3.Close()
 
-	// c := pb.NewPozoServiceClient(conn3)
-	// // Contact the server and print out its response.
-	// ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-	// defer cancel()
-	// r, err := c.SendMount(ctx, &pb.MountReq{})
-	// ut.FailOnError(err, "Failed to send a mount")
-	// fmt.Println("El pozo tiene un monto de: %d", r.GetMonto())
-
+	// Creamos conexion con el servicio 
+	csp := sp.NewSendPlaysServiceClient(conn3)
+	// Conectamos con el servidor y se imprime la respuesta
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	r, err := csp.SendPlays(ctx, &sp.PlaysReq{Play: jugada}) // 
+	ut.FailOnError(err, "Failed to send a play")
+	fmt.Println("Registro exitoso", r)
 }
 
 
@@ -112,9 +113,12 @@ func enviarJugadasNameNode(jugada string) {
 
 func main(){
 
-	// ----- GRPC ----- //
-	grpc_func()
+	// ----- FUNCIÓN: pedir monto acumulado al pozo ----- //
+	// go requestMount()
 
-	// ----- RABBITMQ ----- //
+	// ----- FUNCIÓN: enviar jugadas al NameNode ----- //
+	go sendPlaysLider("Jugador_1 Ronda_1 jugada_1") 	// 
+	// time.Sleep(5 * time.Second)
+	// ----- FUNCIÓN: enviar los jugadores eliminados al pozo ----- //
 	amqp_func()
 }
