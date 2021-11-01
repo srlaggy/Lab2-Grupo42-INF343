@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option go_package = "lab/namenode";
+
+package playerRecordNL;
+
+message PlayerReq{
+    string Player = 1;
+}
+
+message PlayerResp{
+    string Records = 1;
+}
+
+service PlayerRecordService{
+    rpc PlayerRecord(PlayerReq) returns (PlayerResp);
+}
