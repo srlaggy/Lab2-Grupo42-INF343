@@ -106,13 +106,15 @@ func encontrarDataNode(jugador string, ronda string) string ip{
 // Retorna: jugador string, ronda string y jugada como string
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-func entregarJugada(jugador string, ronda string, jugada string)(jugador string, ronda string, jugada string){
+func entregarJugada(dato string) string {
 	var lineContent string =  jugador + " " + ronda
 	var fileName string = "jugadas.txt"
 	file, error1 := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	ip = encontrarDataNode(jugador, ronda)
+	
+	s := strings.Fields(dato)
+	ip = encontrarDataNode(dato[0], dato[1])
 
-	return jugador, ronda, jugada
+	return dato
 
 }
 
@@ -141,7 +143,7 @@ func devolverJugadasRondas(jugador string) string{
 	
 	for i < 3{
 		i++
-		solicitarJugadasRondas(jugador, i)
+		valores = solicitarJugadasRondas(jugador, i)
 	}
 }
 
