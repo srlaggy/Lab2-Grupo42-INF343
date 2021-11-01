@@ -4,9 +4,12 @@ package main
 
 import(
 	sp "lab/namenode/src/sendPlaysNL"
+    pr "lab/namenode/src/playerRecordNL"
 )
 
 // --------------- FUNCION PRINCIPAL --------------- //
 func main() {
-	sp.Grpc_func()
+	// servidor grpc que recibe jugada
+	go sp.Grpc_func()
+    pr.Grpc_func()
 }

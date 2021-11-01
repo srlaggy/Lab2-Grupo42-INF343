@@ -13,13 +13,13 @@ clean:
 	@echo Terminado
 
 run:
-	@echo Iniciando servidor Pozo
+	@echo Iniciando Pozo
 	@bin/pozo.exe
 
 all:
 	@echo Construyendo Pozo
 	@go build -o bin/pozo.exe pozo.go
-	@echo Iniciando servidor Pozo
+	@echo Iniciando Pozo
 	@bin/pozo.exe
 
 #############
@@ -37,11 +37,11 @@ all:
 # @echo Terminado
 
 # run:
-# @echo Iniciando servidor Pozo
+# @echo Iniciando Pozo
 # @./bin/pozo
 
 # all:
 # @echo Construyendo Pozo
 # @go build -o bin/pozo pozo.go
-# @echo Iniciando servidor Pozo
+# @echo Iniciando Pozo
 # @./bin/pozo

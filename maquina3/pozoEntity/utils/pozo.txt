@@ -26,3 +26,15 @@ Jugador_16 Ronda_8 24000000
 Jugador_16 Ronda_8 25000000
 Jugador_16 Ronda_8 26000000
 Jugador_16 Ronda_8 27000000
+Jugador_13 Ronda_4 28000000
+Jugador_13 Ronda_4 29000000
+Jugador_13 Ronda_4 30000000
+Jugador_13 Ronda_4 31000000
+Jugador_13 Ronda_4 32000000
+Jugador_13 Ronda_4 33000000
+Jugador_13 Ronda_4 34000000
+Jugador_13 Ronda_4 35000000
+Jugador_13 Ronda_4 36000000
+Jugador_13 Ronda_4 37000000
+Jugador_13 Ronda_4 38000000
+Jugador_13 Ronda_4 39000000

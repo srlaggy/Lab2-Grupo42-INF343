@@ -13,13 +13,13 @@ clean:
 	@echo Terminado
 
 run:
-	@echo Iniciando servidor namenode
+	@echo Iniciando Namenode
 	@bin/namenode.exe
 
 all:
 	@echo Construyendo namenode
 	@go build -o bin/namenode.exe namenode.go
-	@echo Iniciando servidor namenode
+	@echo Iniciando Namenode
 	@bin/namenode.exe
 
 #############
@@ -37,11 +37,11 @@ all:
 # @echo Terminado
 
 # run:
-# @echo Iniciando servidor namenode
+# @echo Iniciando Namenode
 # @./bin/namenode
 
 # all:
 # @echo Construyendo namenode
 # @go build -o bin/namenode namenode.go
-# @echo Iniciando servidor namenode
+# @echo Iniciando Namenode
 # @./bin/namenode

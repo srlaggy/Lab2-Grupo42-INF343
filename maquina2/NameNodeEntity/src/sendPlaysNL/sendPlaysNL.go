@@ -23,7 +23,7 @@ type server struct {
 // funcion: conecta con el service SendPlays
 func (s *server) SendPlays(ctx context.Context, in *sp.PlaysReq) (*sp.PlaysResp, error) {
 	log.Printf("Received %v", in.Play) // 
-	return &sp.PlaysResp{Resp: "recibido Hello WORD"}, nil
+	return &sp.PlaysResp{}, nil
 }
 
 // funciones: crea la conexión

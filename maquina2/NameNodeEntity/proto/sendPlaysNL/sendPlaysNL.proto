@@ -9,7 +9,6 @@ message PlaysReq{
 }
 
 message PlaysResp{
-    string resp = 1;
 }
 
 service SendPlaysService{
