@@ -7,6 +7,7 @@ import(
 	"google.golang.org/grpc"
 	rp "lab/namenode/proto/playerRecordNL"
 	ut "lab/namenode/utils"
+	am "lab/namenode/src/AdministacionJugadas"
 )
 
 const (
@@ -23,7 +24,7 @@ type server struct {
 // funcion: conecta con el service PlayerRecord
 func (s *server) PlayerRecord(ctx context.Context, in *rp.PlayerReq) (*rp.PlayerResp, error) {
 	log.Printf("Received %v", in.Player) // 
-	return &rp.PlayerResp{Records: "REGISTRO DE JUGADAS DEL JUGADOR"}, nil
+	return &rp.PlayerResp{Records: am.DevolverJugadasRondas(in.Player)}, nil
 }
 
 // funciones: crea la conexión

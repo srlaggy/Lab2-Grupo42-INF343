@@ -11,6 +11,7 @@ import (
 	   "google.golang.org/grpc" */
 	"bufio"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -25,7 +26,7 @@ func main() {
 // Retorna: Nada
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
-func crearRegistroJugadas(jugador string, ronda string){
+func crearRegistroJugadas(registro string){
 
 	//TO-DO: Redefinir el input en caso de ser necesario
 	//TO-DO: En caso de redefinir el input hacer de ronda y
@@ -33,7 +34,8 @@ func crearRegistroJugadas(jugador string, ronda string){
 	//NOTE: jugador_n__ronda_m.txt
 	
 	//Se crea el archivo
-	var fileName string = jugador + "__" + ronda + ".txt"
+	s := strings.Fields(dato)
+	var fileName string = s[0] + "__" + s[1] + ".txt"
 	file, err := os.Create(fileName)
 	//FailOnError(err, "Failed to create file")
 	//FIXME: undeclared name: failOnError
@@ -47,7 +49,7 @@ func crearRegistroJugadas(jugador string, ronda string){
 // Retorna: Nada
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
-func registrarJugada(jugador string, ronda string, jugada string){
+func registrarJugada(registro string){
 
 	//TO-DO: Redefinir el input en caso de ser necesario
 	//TO-DO: En caso de redefinir el input hacer de ronda y
@@ -55,13 +57,14 @@ func registrarJugada(jugador string, ronda string, jugada string){
 	//NOTE: jugador_n__ronda_m.txt
 	
 	//Se abre el archivo
-	var fileName string = jugador + "__" + ronda + ".txt"
+	s := strings.Fields(dato)
+	var fileName string = s[0] + "__" + s[1] + ".txt"
 	file, error1 := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	//?: ¿Que es 0644?
 
 	//FIXME: undeclared name: failOnError
 
-	JugadaARegistar :=  jugada + "\n"
+	JugadaARegistar :=  s[2] + "\n"
 	_, error2 := file.WriteString(JugadaARegistar)
 
 	

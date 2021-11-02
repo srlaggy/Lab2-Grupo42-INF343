@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option go_package = "lab/dataNode";
+
+package playerRecordDN;
+
+message RecordResp{
+    string record = 1;
+}
+
+message RecordReq{
+    string player = 1;
+    string game = 2;
+}
+
+service RecordService{
+    rpc SendRecord(RecordReq) returns (RecordResp);
+}

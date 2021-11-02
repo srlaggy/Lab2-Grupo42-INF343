@@ -31,7 +31,7 @@ func iniciarRegistroJugadas(){
 	//Se crea el archivo
 	var fileName string =  "jugadas.txt"
 	file, err := os.Create(fileName)
-	//failOnError(err, "Failed to create file")
+	//FailOnError(err, "Failed to create file")
 	defer file.Close()
 }
 
@@ -128,10 +128,14 @@ func entregarJugada(dato string) string {
 func SolicitarJugadas(jugador string, ronda string) string{
 		
 	ip := encontrarDataNode(jugador, ronda, true)
-		if(ip == "No hay jugadas"){
-			return ip
-		}
-		return "Texto de reemplazo"
+	if(ip == "No hay jugadas"){
+		return ip
+	}
+
+	//TO-DO: hacer un request a dataNode, recibir la request y usarlo
+	// en lugar del texto de reemplazo
+
+	return "Texto de reemplazo"
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -155,4 +159,3 @@ func DevolverJugadasRondas(jugador string) string{
 	}
 	return jugadas
 }
-
