@@ -1,7 +1,7 @@
 package startGameL
 
 import (
-	"fmt"
+	// "fmt"
 )
 
 const (
@@ -17,7 +17,7 @@ func StartGame(){
 
 	for len(jugadores)<=maxJug{
 		if change{
-			fmt.Printf("\nNúmero de jugadores: %d\n", GetCantidadJugadores())
+			// fmt.Printf("\nNúmero de jugadores: %d\n", GetCantidadJugadores())
 			ChangeJugadores()
 			if len(jugadores)==maxJug{
 				break
@@ -26,11 +26,11 @@ func StartGame(){
 	}
 }
 
-func AddPlayerGame() int{
+func AddPlayerGame() int64{
 	if len(jugadores)<cap(jugadores){
 		jugadores = append(jugadores, len(jugadores)+1)
 		ChangeJugadores()
-		return len(jugadores)
+		return int64(len(jugadores))
 	} else {
 		return 0
 	}

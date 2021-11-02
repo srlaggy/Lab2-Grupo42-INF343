@@ -23,7 +23,7 @@ const (
 	protocolo_amqp = "amqp"
 	address = "localhost"
 	port_amqp = "5672"
-	montoMuerto = 1000000
+	montoMuerto = 100000000
 	fileName = "utils/pozo.txt"
 )
 

@@ -6,7 +6,7 @@ import(
 	"net"
 	"fmt"
 	"google.golang.org/grpc"
-	sp "lab/lider/proto/sendPlaysLJ"
+	lj "lab/lider/proto/LJ"
 	e1 "lab/lider/etapa/e1"
 	ut "lab/lider/utils"
 )
@@ -22,17 +22,17 @@ var nroLider int64 = e1.RandomNumber()
 
 // ----- FUNCIÓN: recibir jugadas del jugador ----- // --> Lider actua como servidor
 type server struct {
-	sp.UnimplementedSendPasosServiceServer
+	lj.UnimplementedLiderJugadorServiceServer
 }
 
-// funcion: conecta con el service SendPasos
-func (s *server) SendPasos(ctx context.Context, in *sp.NumPasosReq) (*sp.NumPasosResp, error) {
+// funcion: primer juego
+func (s *server) EtapaUno(ctx context.Context, in *lj.NumPasosReq) (*lj.NumPasosResp, error) {
 	var msg int64 = 1
 	if in.PlayMsg >= nroLider{
-		fmt.Printf("El jugador x ha muerto\n")
+		fmt.Printf("El jugador %d ha muerto\n", in.NroJugador)
 		msg = 0
 	}
-	return &sp.NumPasosResp{StateMsg: msg}, nil
+	return &lj.NumPasosResp{StateMsg: msg}, nil
 }
 
 // funciones: crea la conexión
@@ -43,7 +43,7 @@ func Grpc_func() {
 	fmt.Printf("el numero del lider es %d\n", nroLider)
 
 	s := grpc.NewServer()
-	sp.RegisterSendPasosServiceServer(s, &server{})
+	lj.RegisterLiderJugadorServiceServer(s, &server{})
 	log.Printf("Servidor grpc escuchando en el puerto %v", port_grpc1)
 	ut.FailOnError(s.Serve(lis), "Failed to serve")
 }

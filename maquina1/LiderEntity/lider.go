@@ -9,7 +9,7 @@ import (
 	// pr "lab/lider/src/playerRecordNL"
 	rg "lab/lider/src/sendGameLJ"
 	sg "lab/lider/src/startGameL"
-	rp "lab/lider/src/receivePlaysLJ"
+	e1c "lab/lider/src/EtapaUnoLJ"
 	"time"
 	"fmt"
 )
@@ -35,10 +35,12 @@ func main(){
 	// ----- FUNCIÓN: enviar los jugadores eliminados al pozo ----- //
 	// sd.SendDead_amqp()
 
-	fmt.Printf("\nComienza el juego\n")
+	time.Sleep(5*time.Second)
 	
+	fmt.Printf("\nComienza el juego\n")
+
 	// funcion que recibe jugadas de jugadores en la primera etapa
-	rp.Grpc_func()
+	e1c.Grpc_func()
 	
 	time.Sleep(10*time.Second)
 }

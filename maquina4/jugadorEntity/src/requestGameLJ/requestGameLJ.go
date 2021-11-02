@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"google.golang.org/grpc"
 	ut "lab/jugador/utils"
-	rg "lab/jugador/proto/requestGameLJ"
+	lj "lab/jugador/proto/LJ"
 )
 
 const (
@@ -14,6 +14,9 @@ const (
 	protocolo_grpc = ""
 	port_grpc = "50000"
 )
+
+// variables globales
+var nroJugador int64
 
 // --------------- FUNCIONES GRPC --------------- //
 
@@ -25,12 +28,18 @@ func RequestGame(entrada string) {
 	ut.FailOnError(err, "Failed to create a connection")
 	defer conn1.Close()
 
-	c := rg.NewRequestGameServiceClient(conn1)
+	c := lj.NewLiderJugadorServiceClient(conn1)
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	r, err := c.RequestGame(ctx, &rg.GameReq{EntryMsg: entrada})
+	r, err := c.RequestGame(ctx, &lj.GameReq{EntryMsg: entrada})
 	ut.FailOnError(err, "Failed to send a entry")
+	// almacenamos numero del jugador
+	nroJugador = r.GetNroJugador()
 	fmt.Printf("%s", r.GetGameMsg())
+}
+
+func GetNumeroJugador() int64{
+	return nroJugador
 }

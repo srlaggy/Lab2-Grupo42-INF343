@@ -3,6 +3,7 @@ package e1
 import (
     "math/rand"
 	"time"
+	"fmt"
 )
 
 const (
@@ -16,6 +17,11 @@ func RandomNumber() int64{
 	return int64(aux)
 }
 
-// func MuertoFlag(resp int){
-
-// }
+// muerto 0 - vivo 1
+func LiveOrDead(num int64){
+	if num==0{
+		fmt.Printf("Tu estas muerto, BANG!!")
+	} else {
+		fmt.Printf("Te salvaste esta vez")
+	}
+}

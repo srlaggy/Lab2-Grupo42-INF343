@@ -7,7 +7,7 @@ import (
 	"fmt"
 
 	"google.golang.org/grpc"
-	rg "lab/lider/proto/requestGameLJ"
+	lj "lab/lider/proto/LJ"
 	sg "lab/lider/src/startGameL"
 	ut "lab/lider/utils"
 )
@@ -22,17 +22,17 @@ var mensajeDeEntrada string
 
 // --------------- FUNCIONES GRPC --------------- //
 type server struct {
-	rg.UnimplementedRequestGameServiceServer
+	lj.UnimplementedLiderJugadorServiceServer
 }
 
-func (s *server) RequestGame(ctx context.Context, in *rg.GameReq) (*rg.GameResp, error) {
+func (s *server) RequestGame(ctx context.Context, in *lj.GameReq) (*lj.GameResp, error) {
 	value := sg.AddPlayerGame()
 	mensajeDeEntrada = "El juego ya comenzó. No puedes ingresar.\n"
 	if value!=0{
 		mensajeDeEntrada = fmt.Sprintf("Estas dentro del juego. Eres el jugador %d\n", value)
 		log.Printf("Entry Received")
 	}
-	return &rg.GameResp{GameMsg: mensajeDeEntrada}, nil
+	return &lj.GameResp{GameMsg: mensajeDeEntrada, NroJugador: value}, nil
 }
 
 // --------------- FUNCION PRINCIPAL --------------- //
@@ -41,7 +41,7 @@ func Grpc_func() {
 	ut.FailOnError(err, "Failed to listen")
 
 	s := grpc.NewServer()
-	rg.RegisterRequestGameServiceServer(s, &server{})
+	lj.RegisterLiderJugadorServiceServer(s, &server{})
 	log.Printf("Servidor grpc escuchando en el puerto %v", port_grpc)
 	ut.FailOnError(s.Serve(lis), "Failed to serve")
 }

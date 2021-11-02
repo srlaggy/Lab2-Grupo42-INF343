@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option go_package = "lab/jugador";
+
+package LJ;
+
+message GameReq{
+    string entryMsg = 1;
+}
+
+message GameResp{
+    string gameMsg = 1;
+    int64 nroJugador = 2;
+}
+
+message NumPasosReq{
+    int64 PlayMsg = 1;
+    int64 nroJugador = 2;
+}
+
+message NumPasosResp{
+    int64 stateMsg = 1;
+}
+
+service LiderJugadorService{
+    rpc RequestGame(GameReq) returns (GameResp);
+    rpc EtapaUno(NumPasosReq) returns (NumPasosResp);
+}
