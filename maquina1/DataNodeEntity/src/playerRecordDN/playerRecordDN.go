@@ -20,11 +20,11 @@ const (
 
 // ----- FUNCIÓN: Devolver registro del jugador ----- // --> DataNode actua como servidor
 type server struct {
-	rp.UnimplementedPlayerRecordServiceServer
+	rp.UnimplementedRecordServiceServer
 }
 
-// funcion: conecta con el service PlayerRecord
-func (s *server) PlayerRecord(ctx context.Context, in *rp.RecordReq) (*rp.RecordResp, error) {
+// funcion: conecta con el service Record
+func (s *server) Record(ctx context.Context, in *rp.RecordReq) (*rp.RecordResp, error) {
 	log.Printf("Received %v", in.Player) // 
 	return &rp.RecordResp{Records: dr.DevolverJugadas(in.player, in.game)}, nil
 }
