@@ -4,17 +4,21 @@ import (
 	"context"
 	"log"
 	"net"
+	"fmt"
 
 	"google.golang.org/grpc"
 	rg "lab/lider/proto/requestGameLJ"
+	sg "lab/lider/src/startGameL"
 	ut "lab/lider/utils"
 )
 
 const (
 	protocolo_grpc = "tcp"
 	port_grpc = "50000"
-	mensajeDeEntrada = "Entraste al juego"
 )
+
+// VARIABLES GLOBALES
+var mensajeDeEntrada string
 
 // --------------- FUNCIONES GRPC --------------- //
 type server struct {
@@ -22,7 +26,12 @@ type server struct {
 }
 
 func (s *server) RequestGame(ctx context.Context, in *rg.GameReq) (*rg.GameResp, error) {
-	log.Printf("Entry Received")
+	value := sg.AddPlayerGame()
+	mensajeDeEntrada = "El juego ya comenzó. No puedes ingresar.\n"
+	if value!=0{
+		mensajeDeEntrada = fmt.Sprintf("Estas dentro del juego. Eres el jugador %d\n", value)
+		log.Printf("Entry Received")
+	}
 	return &rg.GameResp{GameMsg: mensajeDeEntrada}, nil
 }
 
