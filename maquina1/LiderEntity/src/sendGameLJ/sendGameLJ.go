@@ -27,9 +27,9 @@ type server struct {
 
 func (s *server) RequestGame(ctx context.Context, in *lj.GameReq) (*lj.GameResp, error) {
 	value := sg.AddPlayerGame()
-	mensajeDeEntrada = "El juego ya comenzó. No puedes ingresar.\n"
+	mensajeDeEntrada = "\nEl juego ya comenzó. No puedes ingresar.\n"
 	if value!=0{
-		mensajeDeEntrada = fmt.Sprintf("Estas dentro del juego. Eres el jugador %d\n", value)
+		mensajeDeEntrada = fmt.Sprintf("\nEstas dentro del juego. Eres el jugador %d\n", value)
 		log.Printf("Entry Received")
 	}
 	return &lj.GameResp{GameMsg: mensajeDeEntrada, NroJugador: value}, nil
@@ -42,6 +42,6 @@ func Grpc_func() {
 
 	s := grpc.NewServer()
 	lj.RegisterLiderJugadorServiceServer(s, &server{})
-	log.Printf("Servidor grpc escuchando en el puerto %v", port_grpc)
+	log.Printf("Servidor grpc escuchando en el puerto %v\n", port_grpc)
 	ut.FailOnError(s.Serve(lis), "Failed to serve")
 }
