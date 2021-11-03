@@ -5,7 +5,7 @@ import (
 )
 
 const (
-	maxJug = 3 // cambiar a 16
+	maxJug = 16 // cambiar a 16
 )
 
 // VARIABLES GLOBALES

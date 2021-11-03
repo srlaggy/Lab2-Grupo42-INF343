@@ -9,7 +9,7 @@ import (
 	// pr "lab/lider/src/playerRecordNL"
 	rg "lab/lider/src/sendGameLJ"
 	sg "lab/lider/src/startGameL"
-	// e1 "lab/lider/src/EtapaUnoLJ"
+	e1 "lab/lider/src/EtapaUnoLJ"
 	e2 "lab/lider/src/EtapaDosLJ"
 	"time"
 	"fmt"
@@ -37,19 +37,25 @@ func main(){
 	// sd.SendDead_amqp()
 
 	time.Sleep(5*time.Second)
-	
 	fmt.Printf("\nComienza el juego\n")
 
 	// funcion que recibe jugadas de jugadores en la primera etapa
-	// go e1.Grpc_func()
+	go e1.Grpc_func()
 
-	// e1.LoopEtapaUno()
+	e1.LoopEtapaUno()
+	time.Sleep(5*time.Second)
 
-	// e2.Group()
+	fmt.Println(sg.GetVivos())
+
+	e2.GroupAndNumberLider()
+	fmt.Println("El numero del lider es", e2.GetNroLider())
+	fmt.Println("El grupo 1 es", e2.GetGroup1())
+	fmt.Println("El grupo 2 es", e2.GetGroup2())
+	
 	e2.Grpc_func()
 
 	
-	// fmt.Println(sg.GetVivos())
+	fmt.Println(sg.GetVivos())
 
 	time.Sleep(5*time.Second)
 }

@@ -17,12 +17,15 @@ const (
 	address = "localhost"
 	protocolo_grpc = "tcp"
 	port_grpc1 = "50001"
-	min = 6
-	max = 10
+	// min = 6   // descomentar
+	// max = 10  // descomentar
+	min = 10
+	max = 12
 )
 
 // variable global
 var nroLider []int
+var juegoUno []bool
 
 // ----- FUNCIÓN: recibir jugadas del jugador ----- // --> Lider actua como servidor
 type server struct {
@@ -31,16 +34,25 @@ type server struct {
 
 // funcion: primer juego
 func (s *server) EtapaUno(ctx context.Context, in *lj.NumPasosReq) (*lj.NumPasosResp, error) {
-	// 2 muerto por rondas - 1 vivo - 0 muerto
+	// 3 gano el juego (sin importar la ronda) - 2 muerto por rondas - 1 vivo - 0 muerto
 	var msg int64 = 1
 	if in.PlayMsg >= int64(nroLider[in.Ronda]){
 		sg.SetVivos(int(in.NroJugador)-1, false)
+		// ya jugo el juego
+		juegoUno[int(in.NroJugador)-1] = true
 		msg = 0
 		fmt.Printf("El jugador %d ha muerto\n", in.NroJugador)
-	}else if in.Ronda==3 && in.Total<21{
+	}else if in.Ronda==3 && in.Total+in.PlayMsg<21{
 		sg.SetVivos(int(in.NroJugador)-1, false)
+		// ya jugo el juego
+		juegoUno[int(in.NroJugador)-1] = true
 		msg = 2
 		fmt.Printf("El jugador %d ha muerto\n", in.NroJugador)
+	}else if in.Total+in.PlayMsg>=21{
+		msg = 3
+		// ya jugo el juego
+		juegoUno[int(in.NroJugador)-1] = true
+		fmt.Printf("El jugador %d supero el juego 1 en la ronda %d\n", in.NroJugador, in.Ronda + 1)
 	}
 	return &lj.NumPasosResp{StateMsg: msg}, nil
 }
@@ -51,10 +63,6 @@ func Grpc_func() {
 	ut.FailOnError(err, "Failed to listen")
 
 	nroLider = CreateRandomNumbers()
-	fmt.Printf("\nel numero del lider en ronda 1 es %d\n", nroLider[0])
-	fmt.Printf("\nel numero del lider en ronda 2 es %d\n", nroLider[1])
-	fmt.Printf("\nel numero del lider en ronda 3 es %d\n", nroLider[2])
-	fmt.Printf("\nel numero del lider en ronda 4 es %d\n", nroLider[3])
 
 	s := grpc.NewServer()
 	lj.RegisterLiderJugadorServiceServer(s, &server{})
@@ -64,7 +72,7 @@ func Grpc_func() {
 
 // FUNCIONES AUXILIARES
 
-// determina numero random del lider
+// determina numero random
 func RandomNumber() int64{
 	rand.Seed(time.Now().UnixNano())
 	aux := rand.Intn(max - min) + min
@@ -73,33 +81,43 @@ func RandomNumber() int64{
 
 // crear numeros randoms para las 4 rondas
 func CreateRandomNumbers() []int{
+	rand.Seed(time.Now().UnixNano())
 	aux := make([]int, 4)
 	for i:=0; i<4; i++{
-		aux[i] = int(RandomNumber())
+		aux[i] = rand.Intn(max - min) + min
 	}
 	return aux
 }
 
-// funcion que revisa si todos murieron
-func RevVivos() bool{
-	aux := sg.GetVivos()
-	// retorna si todos estan muertos
-	muertos := true
+// crear numeros randoms para las 4 rondas
+func CreateJugJuegoUno() []bool{
+	aux := make([]bool, sg.GetMaxJug())
 	for i:=0; i<len(aux); i++{
-		// si pillo uno que no este muerto, en verdad no estan muertos todos
-		if aux[i]{
-			muertos = false
+		aux[i] = false
+	}
+	return aux
+}
+
+// funcion que revisa si todos jugaron
+func RevJugaron() bool{
+	// retorna si todos jugaron
+	jugaron := true
+	for i:=0; i<len(juegoUno); i++{
+		// si pillo uno que no haya jugado, en verdad no han jugado todos
+		if !juegoUno[i]{
+			jugaron = false
 		}
 	}
-	// true -> todos muertos
-	// false -> NO todos muertos
-	return muertos
+	// true -> todos jugaron
+	// false -> NO todos jugaron
+	return jugaron
 }
 
 // bucle de etapa 1
 func LoopEtapaUno(){
+	juegoUno = CreateJugJuegoUno()
 	for{
-		if RevVivos(){
+		if RevJugaron(){
 			break
 		}
 	}
