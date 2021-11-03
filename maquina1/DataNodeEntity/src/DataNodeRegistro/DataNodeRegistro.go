@@ -1,4 +1,4 @@
-package dataNodeRegistro
+package datanode
 
 // Datnode
 
