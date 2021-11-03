@@ -20,6 +20,8 @@ const _ = grpc.SupportPackageIsVersion7
 type LiderJugadorServiceClient interface {
 	RequestGame(ctx context.Context, in *GameReq, opts ...grpc.CallOption) (*GameResp, error)
 	EtapaUno(ctx context.Context, in *NumPasosReq, opts ...grpc.CallOption) (*NumPasosResp, error)
+	Etapa2Conn(ctx context.Context, in *E2ConnReq, opts ...grpc.CallOption) (*E2ConnResp, error)
+	Etapa2(ctx context.Context, in *Etapa2Req, opts ...grpc.CallOption) (*Etapa2Resp, error)
 }
 
 type liderJugadorServiceClient struct {
@@ -48,12 +50,32 @@ func (c *liderJugadorServiceClient) EtapaUno(ctx context.Context, in *NumPasosRe
 	return out, nil
 }
 
+func (c *liderJugadorServiceClient) Etapa2Conn(ctx context.Context, in *E2ConnReq, opts ...grpc.CallOption) (*E2ConnResp, error) {
+	out := new(E2ConnResp)
+	err := c.cc.Invoke(ctx, "/LJ.LiderJugadorService/Etapa2Conn", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *liderJugadorServiceClient) Etapa2(ctx context.Context, in *Etapa2Req, opts ...grpc.CallOption) (*Etapa2Resp, error) {
+	out := new(Etapa2Resp)
+	err := c.cc.Invoke(ctx, "/LJ.LiderJugadorService/Etapa2", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // LiderJugadorServiceServer is the server API for LiderJugadorService service.
 // All implementations must embed UnimplementedLiderJugadorServiceServer
 // for forward compatibility
 type LiderJugadorServiceServer interface {
 	RequestGame(context.Context, *GameReq) (*GameResp, error)
 	EtapaUno(context.Context, *NumPasosReq) (*NumPasosResp, error)
+	Etapa2Conn(context.Context, *E2ConnReq) (*E2ConnResp, error)
+	Etapa2(context.Context, *Etapa2Req) (*Etapa2Resp, error)
 	mustEmbedUnimplementedLiderJugadorServiceServer()
 }
 
@@ -66,6 +88,12 @@ func (UnimplementedLiderJugadorServiceServer) RequestGame(context.Context, *Game
 }
 func (UnimplementedLiderJugadorServiceServer) EtapaUno(context.Context, *NumPasosReq) (*NumPasosResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method EtapaUno not implemented")
+}
+func (UnimplementedLiderJugadorServiceServer) Etapa2Conn(context.Context, *E2ConnReq) (*E2ConnResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Etapa2Conn not implemented")
+}
+func (UnimplementedLiderJugadorServiceServer) Etapa2(context.Context, *Etapa2Req) (*Etapa2Resp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Etapa2 not implemented")
 }
 func (UnimplementedLiderJugadorServiceServer) mustEmbedUnimplementedLiderJugadorServiceServer() {}
 
@@ -116,6 +144,42 @@ func _LiderJugadorService_EtapaUno_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _LiderJugadorService_Etapa2Conn_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(E2ConnReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LiderJugadorServiceServer).Etapa2Conn(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/LJ.LiderJugadorService/Etapa2Conn",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LiderJugadorServiceServer).Etapa2Conn(ctx, req.(*E2ConnReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _LiderJugadorService_Etapa2_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Etapa2Req)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LiderJugadorServiceServer).Etapa2(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/LJ.LiderJugadorService/Etapa2",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LiderJugadorServiceServer).Etapa2(ctx, req.(*Etapa2Req))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // LiderJugadorService_ServiceDesc is the grpc.ServiceDesc for LiderJugadorService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -130,6 +194,14 @@ var LiderJugadorService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "EtapaUno",
 			Handler:    _LiderJugadorService_EtapaUno_Handler,
+		},
+		{
+			MethodName: "Etapa2Conn",
+			Handler:    _LiderJugadorService_Etapa2Conn_Handler,
+		},
+		{
+			MethodName: "Etapa2",
+			Handler:    _LiderJugadorService_Etapa2_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -24,7 +24,26 @@ message NumPasosResp{
     int64 stateMsg = 1;
 }
 
+message E2ConnReq{
+    int64 nroJugador = 1;
+}
+
+message E2ConnResp{
+    int64 nroGroup = 1;
+}
+
+message Etapa2Req{
+    int64 nroJugador = 1;
+    int64 numero = 2;
+}
+
+message Etapa2Resp{
+    int64 stateMsg = 1;
+}
+
 service LiderJugadorService{
     rpc RequestGame(GameReq) returns (GameResp);
     rpc EtapaUno(NumPasosReq) returns (NumPasosResp);
+    rpc Etapa2Conn(E2ConnReq) returns (E2ConnResp);
+    rpc Etapa2(Etapa2Req) returns (Etapa2Resp);
 }

@@ -9,9 +9,10 @@ import (
 	// pr "lab/lider/src/playerRecordNL"
 	rg "lab/lider/src/sendGameLJ"
 	sg "lab/lider/src/startGameL"
-	e1 "lab/lider/src/EtapaUnoLJ"
+	// e1 "lab/lider/src/EtapaUnoLJ"
+	e2 "lab/lider/src/EtapaDosLJ"
 	"time"
-	// "fmt"
+	"fmt"
 )
 
 // --------------- FUNCION MAIN --------------- //
@@ -40,9 +41,13 @@ func main(){
 	fmt.Printf("\nComienza el juego\n")
 
 	// funcion que recibe jugadas de jugadores en la primera etapa
-	go e1.Grpc_func()
+	// go e1.Grpc_func()
 
-	e1.LoopEtapaUno()
+	// e1.LoopEtapaUno()
+
+	// e2.Group()
+	e2.Grpc_func()
+
 	
 	// fmt.Println(sg.GetVivos())
 
