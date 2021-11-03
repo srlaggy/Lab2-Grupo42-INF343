@@ -1,9 +1,9 @@
-package sendPlaysNL
+package sendPlaysDN
 
 import (
 	"context"
-	sp "lab/namenode/proto/sendPlaysNL"
-	ut "lab/namenode/utils"
+	sp "lab/datanode/proto/sendPlaysNL"
+	ut "lab/datanode/utils"
 	"log"
 	"net"
 
@@ -14,18 +14,19 @@ const (
 	address = "localhost"
 	protocolo_grpc = "tcp"
 	port_grpc1 = "60001"
+	//Revisar
 )
 
 // ----- FUNCIÓN: recibir jugadas del Lider ----- // --> NameNode actua como servidor
 type server struct {
-	sp.UnimplementedSendPlaysServiceServer
+	sp.UnimplementedJugadasServiceServer
 }
 
-// funcion: conecta con el service SendPlays
-func (s *server) SendPlays(ctx context.Context, in *sp.PlaysReq) (*sp.PlaysResp, error) {
-	log.Printf("Received %v", in.Play) // 
-	am.entregarJugada(in.Play)
-	return &sp.PlaysResp{}, nil
+// funcion: conecta con el service Jugadas
+func (s *server) Jugadas(ctx context.Context, in *sp.JugadasReq) (*sp.JugadasResp, error) {
+	log.Printf("Received %v", in.registro)
+	dr.registrarJugada(in.registro)
+	return &sp.JugadasResp{}, nil
 }
 
 // funciones: crea la conexión
@@ -34,7 +35,7 @@ func Grpc_func() {
 	ut.FailOnError(err, "Failed to listen")
 
 	s := grpc.NewServer()
-	sp.RegisterSendPlaysServiceServer(s, &server{})
+	sp.RegisterJugadasServiceServer(s, &server{})
 	log.Printf("Servidor grpc escuchando en el puerto %v", port_grpc1)
 	ut.FailOnError(s.Serve(lis), "Failed to serve")
 }

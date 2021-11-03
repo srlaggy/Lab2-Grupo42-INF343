@@ -1,4 +1,4 @@
-package main
+package dataNodeRegistro
 
 // Datnode
 
@@ -10,6 +10,7 @@ import (
 	   "fmt"
 	   "google.golang.org/grpc" */
 	"bufio"
+	ut "lab/datanode/utils"
 	"os"
 	"strings"
 )
@@ -37,7 +38,7 @@ func crearRegistroJugadas(registro string){
 	s := strings.Fields(dato)
 	var fileName string = s[0] + "__" + s[1] + ".txt"
 	file, err := os.Create(fileName)
-	//FailOnError(err, "Failed to create file")
+	ut.FailOnError(err, "Failed to create file")
 	//FIXME: undeclared name: failOnError
 	defer file.Close()
 }
@@ -60,6 +61,7 @@ func registrarJugada(registro string){
 	s := strings.Fields(dato)
 	var fileName string = s[0] + "__" + s[1] + ".txt"
 	file, error1 := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	ut.FailOnError(error1, "Failed to open file")
 	//?: ¿Que es 0644?
 
 	//FIXME: undeclared name: failOnError
@@ -94,6 +96,7 @@ func DevolverJugadas(jugador string, ronda string) string{
 	//Se abre el archivo
 	var fileName string = jugador + "__" + ronda + ".txt"
 	file, error1 := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	ut.FailOnError(error1, "Failed to open file")
 
 	//FIXME: undeclared name: failOnError
 

@@ -10,6 +10,9 @@ import (
 	"fmt"
 	"google.golang.org/grpc" */
 	"bufio"
+	pr "lab/namenode/src/playerRecordDN"
+	sps "lab/namenode/src/sendPlaysDN"
+	ut "lab/namenode/utils"
 	"math/rand"
 	"os"
 	"strconv"
@@ -31,7 +34,7 @@ func iniciarRegistroJugadas(){
 	//Se crea el archivo
 	var fileName string =  "jugadas.txt"
 	file, err := os.Create(fileName)
-	//FailOnError(err, "Failed to create file")
+	ut.FailOnError(err, "Failed to create file")
 	defer file.Close()
 }
 
@@ -54,7 +57,12 @@ func elegirDataNode(jugador string, ronda string) string {
 	var lineContent string =  jugador + " " + ronda + " " + ip + "\n"
 	var fileName string = "jugadas.txt"
 	file, error1 := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	ut.FailOnError(error1, "Failed to open file")
 	_, error2 := file.WriteString(lineContent)
+	ut.FailOnError(error2, "Failed to write file")
+	defer file.Close()
+
+	ip = "localhost" //DELETE
 	return ip
 }
 
@@ -76,7 +84,8 @@ func iniciarDataNode(jugador string, ronda string){
 func encontrarDataNode(jugador string, ronda string, flag bool) string{
 	var ip string= "No hay jugadas"
 	file, error1 := os.OpenFile("jugadas.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	//FailOnError(error1, "Failed to open file")
+	ut.FailOnError(error1, "Failed to open file")
+	defer file.Close()
 	scanner := bufio.NewScanner(file)
 	var ubicacion string
 	for scanner.Scan(){
@@ -93,6 +102,7 @@ func encontrarDataNode(jugador string, ronda string, flag bool) string{
 	if(!flag){
 		ip = elegirDataNode(jugador, ronda)
 	}
+	ip = "localhost" //DELETE
 	return ip
 }
 
@@ -105,15 +115,15 @@ func encontrarDataNode(jugador string, ronda string, flag bool) string{
 // Retorna: jugador string, ronda string y jugada como string
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-func entregarJugada(dato string) string {
+func entregarJugada(dato string) {
 	
 	var ip string
 
 	s := strings.Fields(dato)
 	ip = encontrarDataNode(s[0], s[1], false)
 
-	return dato
-
+	ip = "localhost" //DELETE
+	sps.SendPlaysDataNode(dato, ip)
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -132,10 +142,17 @@ func SolicitarJugadas(jugador string, ronda string) string{
 		return ip
 	}
 
+	var jugadas string = ""
+
+	ip = "localhost" //DELETE
+	
+	jugadas = pr.PlayerRecordNameNode(jugador, ronda, ip)
+	
+
 	//TO-DO: hacer un request a dataNode, recibir la request y usarlo
 	// en lugar del texto de reemplazo
 
-	return "Texto de reemplazo"
+	return jugadas
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
