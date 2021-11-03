@@ -1,4 +1,4 @@
-package datanode
+package dataNodeRegistro
 
 // Datnode
 
@@ -27,7 +27,7 @@ func main() {
 // Retorna: Nada
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
-func crearRegistroJugadas(registro string){
+func CrearRegistroJugadas(registro string){
 
 	//TO-DO: Redefinir el input en caso de ser necesario
 	//TO-DO: En caso de redefinir el input hacer de ronda y
@@ -35,7 +35,7 @@ func crearRegistroJugadas(registro string){
 	//NOTE: jugador_n__ronda_m.txt
 	
 	//Se crea el archivo
-	s := strings.Fields(dato)
+	s := strings.Fields(registro)
 	var fileName string = s[0] + "__" + s[1] + ".txt"
 	file, err := os.Create(fileName)
 	ut.FailOnError(err, "Failed to create file")
@@ -50,7 +50,7 @@ func crearRegistroJugadas(registro string){
 // Retorna: Nada
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
-func registrarJugada(registro string){
+func RegistrarJugada(registro string){
 
 	//TO-DO: Redefinir el input en caso de ser necesario
 	//TO-DO: En caso de redefinir el input hacer de ronda y
@@ -58,7 +58,7 @@ func registrarJugada(registro string){
 	//NOTE: jugador_n__ronda_m.txt
 	
 	//Se abre el archivo
-	s := strings.Fields(dato)
+	s := strings.Fields(registro)
 	var fileName string = s[0] + "__" + s[1] + ".txt"
 	file, error1 := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	ut.FailOnError(error1, "Failed to open file")
@@ -68,6 +68,7 @@ func registrarJugada(registro string){
 
 	JugadaARegistar :=  s[2] + "\n"
 	_, error2 := file.WriteString(JugadaARegistar)
+	ut.FailOnError(error2, "Failed to write file")
 
 	
 	defer file.Close()

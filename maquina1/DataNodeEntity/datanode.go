@@ -1,10 +1,10 @@
-package datanode
+package main
 
 import (
-	dnr "lab/datanode/src/DataNodeRegistro"
+	dnr "lab/datanode/src/dataNodeRegistro"
 )
 
-fun main() {
-	dnr.crearRegistroJugadas("jugador_1 ronda_1 12")
+func main(){
+	dnr.CrearRegistroJugadas("jugador_1 ronda_1 12")
 
 }
