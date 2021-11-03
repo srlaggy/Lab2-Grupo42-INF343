@@ -10,10 +10,12 @@ const (
 
 // VARIABLES GLOBALES
 var jugadores []int
+var vivos []bool
 var change bool = false
 
 func StartGame(){
 	jugadores = make([]int, 0, maxJug)
+	vivos = make([]bool, 0, maxJug)
 
 	for len(jugadores)<=maxJug{
 		if change{
@@ -29,6 +31,7 @@ func StartGame(){
 func AddPlayerGame() int64{
 	if len(jugadores)<cap(jugadores){
 		jugadores = append(jugadores, len(jugadores)+1)
+		vivos = append(vivos, true)
 		ChangeJugadores()
 		return int64(len(jugadores))
 	} else {
@@ -46,4 +49,20 @@ func ChangeJugadores() {
 	} else {
 		change = false
 	}
+}
+
+func GetMaxJug() int{
+	return maxJug
+}
+
+func GetJugadores() []int{
+	return jugadores
+}
+
+func GetVivos() []bool{
+	return vivos
+}
+
+func SetVivos(mod int, value bool){
+	vivos[mod] = value
 }

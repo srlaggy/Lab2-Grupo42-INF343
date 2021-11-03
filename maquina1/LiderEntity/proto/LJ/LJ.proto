@@ -16,6 +16,8 @@ message GameResp{
 message NumPasosReq{
     int64 PlayMsg = 1;
     int64 nroJugador = 2;
+    int64 total = 3;
+    int64 ronda = 4;
 }
 
 message NumPasosResp{
