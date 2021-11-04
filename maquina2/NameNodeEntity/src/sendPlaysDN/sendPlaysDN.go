@@ -28,6 +28,6 @@ func SendPlaysDataNode(jugada string, address string) {
 	// Conectamos con el servidor y se imprime la respuesta
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	_,err2 := csp.SendJugadas(ctx, &sp.JugadasReq{registro: jugada})
+	_,err2 := csp.SendJugadas(ctx, &sp.JugadasReq{Registro: jugada})
 	ut.FailOnError(err2, "Failed to send a play")
 }

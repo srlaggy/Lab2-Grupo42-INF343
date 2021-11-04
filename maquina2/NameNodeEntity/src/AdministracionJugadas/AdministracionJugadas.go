@@ -66,11 +66,11 @@ func elegirDataNode(jugador string, ronda string) string {
 	return ip
 }
 
-func iniciarDataNode(jugador string, ronda string){
+/* func iniciarDataNode(jugador string, ronda string){
 	var ip string
 	ip = elegirDataNode(jugador, ronda)
 	//TO-DO: Revisar si se hace así
-}
+} */
 
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
