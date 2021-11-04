@@ -1,4 +1,4 @@
-package namenode
+package administracionJugadas
 
 // Datnode
 
@@ -74,7 +74,7 @@ func iniciarDataNode(jugador string, ronda string){
 
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Función: entregarJugada
+// Función: encontrarDataNode
 // -> Localiza la ubicación de una combinación de jugador y
 // ronda y retorna la direccion ip del dataNode correspondiente,
 // en caso de no existir dicha combinación llama a "elegirDataNode"
@@ -115,7 +115,7 @@ func encontrarDataNode(jugador string, ronda string, flag bool) string{
 // Retorna: jugador string, ronda string y jugada como string
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-func entregarJugada(dato string) {
+func EntregarJugada(dato string) {
 	
 	var ip string
 

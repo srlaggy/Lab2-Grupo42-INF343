@@ -3,6 +3,7 @@ package sendPlaysNL
 import (
 	"context"
 	sp "lab/namenode/proto/sendPlaysNL"
+	am "lab/namenode/src/administracionJugadas"
 	ut "lab/namenode/utils"
 	"log"
 	"net"
@@ -24,7 +25,7 @@ type server struct {
 // funcion: conecta con el service SendPlays
 func (s *server) SendPlays(ctx context.Context, in *sp.PlaysReq) (*sp.PlaysResp, error) {
 	log.Printf("Received %v", in.Play) // 
-	am.entregarJugada(in.Play)
+	am.EntregarJugada(in.Play)
 	return &sp.PlaysResp{}, nil
 }
 

@@ -1,9 +1,8 @@
 package main
 
 import (
-	dnr "lab/datanode/src/dataNodeRegistro"
+	prd "lab/datanode/src/playerRecordDN"
 	spd "lab/datanode/src/sendPlaysDN"
-    prd "lab/datanode/src/playerRecordDN"
 )
 
 func main(){

@@ -7,7 +7,7 @@ import(
 	"google.golang.org/grpc"
 	rp "lab/namenode/proto/playerRecordNL"
 	ut "lab/namenode/utils"
-	am "lab/namenode/src/AdministacionJugadas"
+	am "lab/namenode/src/administracionJugadas"
 )
 
 const (

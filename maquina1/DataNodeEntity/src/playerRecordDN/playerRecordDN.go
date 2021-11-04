@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc"
 
 	rp "lab/datanode/proto/playerRecordDN"
-	dr "lab/datanode/src/DataNodeRegistro"
+	dr "lab/datanode/src/dataNodeRegistro"
 	ut "lab/datanode/utils"
 )
 
@@ -26,7 +26,7 @@ type server struct {
 // funcion: conecta con el service Record
 func (s *server) Record(ctx context.Context, in *rp.RecordReq) (*rp.RecordResp, error) {
 	log.Printf("Received %v", in.Player) // 
-	return &rp.RecordResp{Records: dr.DevolverJugadas(in.player, in.game)}, nil
+	return &rp.RecordResp{Record: dr.DevolverJugadas(in.Player, in.Game)}, nil
 }
 
 // funciones: crea la conexión
@@ -35,7 +35,7 @@ func Grpc_func() {
 	ut.FailOnError(err, "Failed to listen")
 
 	s := grpc.NewServer()
-	rp.RegisterPlayerRecordServiceServer(s, &server{})
+	rp.RegisterRecordServiceServer(s, &server{})
 	log.Printf("Servidor grpc escuchando en el puerto %v", port_grpc)
 	ut.FailOnError(s.Serve(lis), "Failed to serve")
 }

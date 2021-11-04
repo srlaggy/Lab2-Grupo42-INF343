@@ -3,7 +3,7 @@ package playerRecordDN
 import (
 	"context"
 	"fmt"
-	pr "lab/namenode/proto/playerRecordNL"
+	pr "lab/namenode/proto/playerRecordDN"
 	ut "lab/namenode/utils"
 	"time"
 
