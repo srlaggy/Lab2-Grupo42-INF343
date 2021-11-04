@@ -6,10 +6,10 @@ import (
 	/* "context"
 	"log"
 	"net"
-	"time"
-	"fmt"
-	"google.golang.org/grpc" */
+	"time"*/
+
 	"bufio"
+	"fmt"
 	pr "lab/namenode/src/playerRecordDN"
 	sps "lab/namenode/src/sendPlaysDN"
 	ut "lab/namenode/utils"
@@ -117,7 +117,9 @@ func encontrarDataNode(jugador string, ronda string, flag bool) string{
 
 func EntregarJugada(dato string) {
 	
+	fmt.Println("Eligiendo ip \n" )
 	var ip string
+	fmt.Println(ip + "\n")
 
 	s := strings.Fields(dato)
 	ip = encontrarDataNode(s[0], s[1], false)

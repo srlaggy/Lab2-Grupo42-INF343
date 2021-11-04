@@ -18,6 +18,7 @@ func main() {
 
 	var num string
 	var ingreso string
+	var valorTemp string
 
 	for{
 		fmt.Println("1 Enviar jugada \n 2 Pedir jugadas \n 3 Salir \n" )
@@ -26,7 +27,9 @@ func main() {
 		
 		if num == "1"{
 			fmt.Println("Ingrese jugada: \n" )
-			fmt.Scanln(&ingreso)
+			fmt.Scanln(&ingreso) //Aqui se cierra ¬¬ FIXME
+			fmt.Println("Recibida\n" )
+			fmt.Scanln(&valorTemp)
 			aj.EntregarJugada(ingreso)
 		} else if num == "2"{
 			fmt.Println("Ingrese jugador: \n" )
