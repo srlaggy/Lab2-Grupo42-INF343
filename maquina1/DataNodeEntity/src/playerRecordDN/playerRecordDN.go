@@ -15,7 +15,7 @@ import (
 const (
 	address = "localhost"
 	protocolo_grpc = "tcp"
-	port_grpc = "60002" //Cambiar puerto y direccion
+	port_grpc = "60100" //Cambiar puerto y direccion
 )
 
 // ----- FUNCIÓN: Devolver registro del jugador ----- // --> DataNode actua como servidor

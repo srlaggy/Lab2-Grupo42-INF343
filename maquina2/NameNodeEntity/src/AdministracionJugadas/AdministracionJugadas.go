@@ -30,7 +30,7 @@ func main() {
 // Retorna: Nada
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
-func iniciarRegistroJugadas(){
+func IniciarRegistroJugadas(){
 	//Se crea el archivo
 	var fileName string =  "jugadas.txt"
 	file, err := os.Create(fileName)

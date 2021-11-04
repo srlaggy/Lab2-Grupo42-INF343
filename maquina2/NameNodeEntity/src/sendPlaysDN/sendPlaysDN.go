@@ -11,7 +11,7 @@ import (
 
 const (
 	protocolo_grpc = ""
-	port_grpc = "60001"
+	port_grpc = "60101"
 )
 
 // --------------- FUNCIONES GRPC --------------- //
