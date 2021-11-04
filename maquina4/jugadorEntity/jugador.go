@@ -34,11 +34,9 @@ func main(){
 
 	// Inicio Juego 2
 	e2.Etapa2ConnTrigger()
-	// e2.StartGameDosTrigger()
-	// if (e2.GetVivo_muerto()){
-	// 	e2.Etapa2()
-	// }
+	e2.StartEtapa2Trigger()
 
 	// fmt.Println(rg.GetVivosSlice())
-	fmt.Println(e2.GetVivosFinDos())
+	fmt.Println(e2.GetVivosNumeros())
+	fmt.Println(e2.GetVivosBool())
 }

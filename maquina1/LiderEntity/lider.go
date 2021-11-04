@@ -37,25 +37,29 @@ func main(){
 	// sd.SendDead_amqp()
 
 	time.Sleep(5*time.Second)
-	fmt.Printf("\nComienza el juego\n")
+	fmt.Println("\nComienza el juego")
+	fmt.Println("Etapa 1\n")
 
 	// funcion que recibe jugadas de jugadores en la primera etapa
 	go e1.Grpc_func()
-
 	e1.LoopEtapaUno()
+	// time.Sleep(5*time.Second)
+
+	// fmt.Println(sg.GetVivos())
+
+	e2.GroupAndNumberLider()
+	fmt.Println("\nEtapa 2\n")
+	// fmt.Println("El numero del lider es", e2.GetNroLider())
+	// fmt.Println("El grupo 1 es", e2.GetGroup1())
+	// fmt.Println("El grupo 2 es", e2.GetGroup2())
+	
+	go e2.Grpc_func()
+	e2.LoopEtapaDos()
 	time.Sleep(5*time.Second)
 
 	fmt.Println(sg.GetVivos())
-
-	e2.GroupAndNumberLider()
-	fmt.Println("El numero del lider es", e2.GetNroLider())
-	fmt.Println("El grupo 1 es", e2.GetGroup1())
-	fmt.Println("El grupo 2 es", e2.GetGroup2())
-	
-	e2.Grpc_func()
-
-	
-	fmt.Println(sg.GetVivos())
+	fmt.Println(e2.GetJugadoresE2())
+	fmt.Println(e2.GetVivos())
 
 	time.Sleep(5*time.Second)
 }

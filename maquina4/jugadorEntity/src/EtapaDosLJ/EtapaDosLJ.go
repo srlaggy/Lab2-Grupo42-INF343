@@ -20,11 +20,20 @@ const (
 )
 
 //var global
+
+// son los numeros vivos al comienzo de la etapa 2 - preasignacion de grupos
 var vivosInicioDos []int64
+// son los vivos descontando el posible personaje sin grupo (son booleanos)
 var vivosFinDos []bool
+// son un slice de control que permite saber cuando todos hayan enviado su peticion de conexion al juego
 var conectarSlice []bool
-// var jugaronSlice []bool
+// slice de control que permite saber quienes ya jugaron
+var jugaronSlice []bool
+// indice de la posicion del jugador humano dentro del slice de jugadores vivos (vivosInicioDos)
 var savePos int64
+// slice de vivos luego de formacion de grupos y su correspondiente vivo o muerto
+var vivosNumeros []int64
+var vivosBool []bool
 
 // --------------- FUNCIONES GRPC --------------- //
 
@@ -80,6 +89,7 @@ func Etapa2ConnTrigger(){
 	}
 }
 
+// funcion que busca indice de elemento en una lista
 func FindIndex(num int64, lista []int64) int{
 	for i:=0; i<len(lista); i++{
 		if lista[i]==num{
@@ -104,7 +114,7 @@ func RevConectaron() bool{
 	return conectar
 }
 
-// detectar cuantos vivos hay
+// detectar cuantos vivos hay y entregarlos en un slice
 func GetVivosInicioDos() []int64{
 	aux := make([]int64, 0, rg.GetMaxJug())
 	aux2 := rg.GetVivosSlice()
@@ -117,10 +127,6 @@ func GetVivosInicioDos() []int64{
 	return aux
 }
 
-func GetVivosFinDos() []bool{
-	return vivosFinDos
-}
-
 // determina numero random del jugador
 func RandomNumber() int64{
 	rand.Seed(time.Now().UnixNano())
@@ -128,7 +134,8 @@ func RandomNumber() int64{
 	return int64(aux)
 }
 
-func Etapa2() {
+// inicio de etapa 2 - conexion con request
+func Etapa2(nroEleccion int64, nroJugador int64) int64{
 	// Creamos conexion
 	conn3, err := grpc.Dial(ut.CreateDir(protocolo_grpc, address, port_grpc), grpc.WithInsecure(), grpc.WithBlock())
 	ut.FailOnError(err, "Failed to create a connection")
@@ -139,7 +146,126 @@ func Etapa2() {
 	// Conectamos con el lider y se imprime la respuesta
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	r,err2 := csp.Etapa2(ctx, &lj.Etapa2Req{NroJugador: rg.GetNumeroJugador(), Numero: RandomNumber()})
-	ut.FailOnError(err2, "Failed to send a play")
-	fmt.Println(r.GetStateMsg())
+	r,err2 := csp.Etapa2(ctx, &lj.Etapa2Req{NroJugador: nroJugador, Numero: nroEleccion})
+	ut.FailOnError(err2, "Failed to send a response")
+	return r.GetStateMsg()
+}
+
+// trigger de jugador humano para request
+func HumanoEtapa2(indice int64){
+	var eleccion int64
+	fmt.Println("\nInicio Juego 2")
+	fmt.Println("Debe ingresar un numero entre 1 y 4")
+	fmt.Println("Usted muere si la paridad de la suma de su equipo es distinta a la eleccion del lider")
+	fmt.Println("Buena suerte")
+
+	eleccion = 0
+	fmt.Println("\nInicio Ronda 1")
+
+	fmt.Println("Ingrese un numero entre 1 y 4:")
+	fmt.Scanln(&eleccion)
+	time.Sleep(3*time.Second)
+
+	for (eleccion>4 || eleccion<1){
+		fmt.Println("Vuelva a ingresar el numero. Debe estar entre 1 y 4")
+		fmt.Scanln(&eleccion)
+	}
+
+	aux := eleccion
+	resp := Etapa2(aux, vivosNumeros[indice])
+	// 0 muere
+	// 1 vive
+	if resp==0{
+		fmt.Println("Tu equipo es muy debil, BANG!!")
+		vivosBool[indice] = false
+		jugaronSlice[indice] = true
+	} else if resp==1{
+		fmt.Println("Gran equipo, pasan a la siguiente Etapa")
+		jugaronSlice[indice] = true
+	}
+	time.Sleep(3*time.Second)
+}
+
+// trigger de jugador bot para request
+func BotEtapa2(indice int64){
+	aux := RandomNumber()
+	resp := Etapa2(aux, vivosNumeros[indice])
+	// 0 muere
+	// 1 vive
+	if resp==0{
+		vivosBool[indice] = false
+		jugaronSlice[indice] = true
+	} else if resp==1{
+		jugaronSlice[indice] = true
+	}
+	time.Sleep(3*time.Second)
+}
+
+func CreateVivosAndBool() ([]int64, []bool, []bool){
+	var aux int = NumVivos()
+	jugadoresAux := make([]int64, 0, aux)
+	vivosAux := make([]bool, 0, aux)
+	jugaronAux := make([]bool, 0, aux)
+	for i:=0; i<len(vivosFinDos); i++{
+		if vivosFinDos[i]{
+			jugadoresAux = append(jugadoresAux, vivosInicioDos[i])
+			vivosAux = append(vivosAux, true)
+			jugaronAux = append(jugaronAux, false)
+		}
+	}
+	return jugadoresAux, vivosAux, jugaronAux
+}
+
+// trigger general etapa 2 (juego 2)
+func StartEtapa2Trigger(){
+	vivosNumeros, vivosBool, jugaronSlice = CreateVivosAndBool()
+	// inicializo valores de jugado - cuando todos hayan jugando puede cerrarse la conexion de juego 1
+	for i:=0; i<NumVivos(); i++{
+		// si es humano no entra
+		if vivosNumeros[i]!=1{
+			// indice en arreglo y numero de jugador
+			go BotEtapa2(int64(i))
+		}
+	}
+	HumanoEtapa2(savePos)
+
+	for{
+		if RevJugaron(){
+			break
+		}
+	}
+}
+
+// funcion que permite saber cuantos vivos hay luego de la reparticion de grupos
+func NumVivos() int{
+	var aux int = 0
+	for i:=0; i<len(vivosFinDos); i++{
+		if vivosFinDos[i]{
+			aux += 1
+		}
+	}
+	return aux
+}
+
+// funcion que revisa si todos jugaron la etapa 2
+func RevJugaron() bool{
+	// retorna si todos jugaron
+	jugaron := true
+	for i:=0; i<len(jugaronSlice); i++{
+		// si pillo uno que no haya jugado, en verdad no han jugado todos
+		if !jugaronSlice[i]{
+			jugaron = false
+		}
+	}
+	// true -> todos jugaron
+	// false -> NO todos jugaron
+	return jugaron
+}
+
+func GetVivosNumeros() []int64{
+	return vivosNumeros
+}
+
+func GetVivosBool() []bool{
+	return vivosBool
 }

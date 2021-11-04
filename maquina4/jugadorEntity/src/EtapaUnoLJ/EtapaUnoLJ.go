@@ -119,7 +119,6 @@ func StartGameUnoBot(numeroJugadorBot int64){
 	vivosAux := rg.GetVivosSlice()
 	for i:=0; i<4; i++{
 		aux := RandomNumber()
-		// fmt.Println("El numero del jugador", numeroJugadorBot, "es", aux, "en ronda", i+1)
 		resp := EtapaUno(aux, sumador, int64(i), numeroJugadorBot)
 		if resp==0{
 			jugaronSlice[numeroJugadorBot-1] = true
