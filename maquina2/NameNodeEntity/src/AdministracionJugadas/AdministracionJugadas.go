@@ -9,7 +9,6 @@ import (
 	"time"*/
 
 	"bufio"
-	"fmt"
 	pr "lab/namenode/src/playerRecordDN"
 	sps "lab/namenode/src/sendPlaysDN"
 	ut "lab/namenode/utils"
@@ -48,7 +47,7 @@ func IniciarRegistroJugadas(){
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 func elegirDataNode(jugador string, ronda string) string {
-	Direcciones := [3]string{"1", "2", "3"}
+	Direcciones := [3]string{"Datanode_1", "Datanode_2", "Datanode_3"}
 	//TO-DO: Reemplazar por las direcciones ip de los pcs de la u,
 	// o las direcciones de prueba segun sea el caso
 	var ip string
@@ -83,6 +82,8 @@ func elegirDataNode(jugador string, ronda string) string {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 func encontrarDataNode(jugador string, ronda string, flag bool) string{
 	var ip string= "No hay jugadas"
+
+	
 	file, error1 := os.OpenFile("jugadas.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	ut.FailOnError(error1, "Failed to open file")
 	defer file.Close()
@@ -90,7 +91,7 @@ func encontrarDataNode(jugador string, ronda string, flag bool) string{
 	var ubicacion string
 	for scanner.Scan(){
 		ubicacion = scanner.Text()
-		s := strings.Fields(ubicacion)
+		s := strings.Split(ubicacion, " ")
 		if(jugador == s[0]){
 			if(ronda == s[1]){
 				ip = s[2]
@@ -99,6 +100,8 @@ func encontrarDataNode(jugador string, ronda string, flag bool) string{
 		}
 
     }
+	
+
 	if(!flag){
 		ip = elegirDataNode(jugador, ronda)
 	}
@@ -117,11 +120,11 @@ func encontrarDataNode(jugador string, ronda string, flag bool) string{
 
 func EntregarJugada(dato string) {
 	
-	fmt.Println("Eligiendo ip \n" )
-	var ip string
-	fmt.Println(ip + "\n")
+	var ip string = ""
+	 
 
-	s := strings.Fields(dato)
+	s := strings.Split(dato, " ")
+	
 	ip = encontrarDataNode(s[0], s[1], false)
 
 	ip = "localhost" //DELETE

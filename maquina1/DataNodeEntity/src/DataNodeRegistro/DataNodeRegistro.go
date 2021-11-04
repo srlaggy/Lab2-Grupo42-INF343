@@ -35,7 +35,7 @@ func CrearRegistroJugadas(registro string){
 	//NOTE: jugador_n__ronda_m.txt
 	
 	//Se crea el archivo
-	s := strings.Fields(registro)
+	s := strings.Split(registro, " ")
 	var fileName string = s[0] + "__" + s[1] + ".txt"
 	file, err := os.Create(fileName)
 	ut.FailOnError(err, "Failed to create file")
@@ -58,7 +58,7 @@ func RegistrarJugada(registro string){
 	//NOTE: jugador_n__ronda_m.txt
 	
 	//Se abre el archivo
-	s := strings.Fields(registro)
+	s := strings.Split(registro, " ")
 	var fileName string = s[0] + "__" + s[1] + ".txt"
 	file, error1 := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	ut.FailOnError(error1, "Failed to open file")

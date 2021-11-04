@@ -18,6 +18,9 @@ func main() {
 
 	var num string
 	var ingreso string
+	var delete string
+
+	aj.EntregarJugada("jugador_1 ronda_1 prueba")
 
 	for{
 		fmt.Println("1 Enviar jugada \n 2 Pedir jugadas \n 3 Salir \n" )
@@ -26,7 +29,9 @@ func main() {
 		
 		if num == "1"{
 			fmt.Println("Ingrese jugada: \n" )
-			fmt.Scanln(&ingreso) 
+			fmt.Scanln(&ingreso) // Aqui falla FIXME
+			fmt.Println(ingreso)
+			fmt.Scanln(&delete)
 			aj.EntregarJugada(ingreso) // Aqui falla FIXME
 		} else if num == "2"{
 			fmt.Println("Ingrese jugador: \n" )

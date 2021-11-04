@@ -3,8 +3,8 @@ package sendPlaysDN
 import (
 	"context"
 	sp "lab/datanode/proto/sendPlaysDN"
-	ut "lab/datanode/utils"
 	dnr "lab/datanode/src/dataNodeRegistro"
+	ut "lab/datanode/utils"
 	"log"
 	"net"
 
@@ -24,7 +24,7 @@ type server struct {
 }
 
 // funcion: conecta con el service Jugadas
-func (s *server) Jugadas(ctx context.Context, in *sp.JugadasReq) (*sp.JugadasResp, error) {
+func (s *server) SendJugadas(ctx context.Context, in *sp.JugadasReq) (*sp.JugadasResp, error) {
 	log.Printf("Received %v", in.Registro)
 	dnr.RegistrarJugada(in.Registro)
 	return &sp.JugadasResp{}, nil

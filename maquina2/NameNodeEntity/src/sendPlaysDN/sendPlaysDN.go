@@ -18,9 +18,13 @@ const (
 
 // ----- FUNCIÓN: enviar jugadas al datanode ----- // --> NameNode actua como cliente
 func SendPlaysDataNode(jugada string, address string) {
+
+	
+	
 	// Creamos conexion
 	conn3, err := grpc.Dial(ut.CreateDir(protocolo_grpc, address, port_grpc), grpc.WithInsecure(), grpc.WithBlock())
 	ut.FailOnError(err, "Failed to create a connection")
+
 	defer conn3.Close()
 
 	// Creamos conexion con el servicio 
@@ -29,5 +33,6 @@ func SendPlaysDataNode(jugada string, address string) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 	_,err2 := csp.SendJugadas(ctx, &sp.JugadasReq{Registro: jugada})
+	//🚩 Aqui me caigo FIXME
 	ut.FailOnError(err2, "Failed to send a play")
 }
