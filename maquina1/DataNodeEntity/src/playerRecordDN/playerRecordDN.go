@@ -25,7 +25,7 @@ type server struct {
 
 // funcion: conecta con el service Record
 func (s *server) SendRecord(ctx context.Context, in *rp.RecordReq) (*rp.RecordResp, error) {
-	log.Printf("jugadas del jugador %v", in.Player)
+	log.Printf("Jugador y ronda %v", in.Player)
 	return &rp.RecordResp{Record: dr.DevolverJugadas(in.Player, in.Game)}, nil
 }
 

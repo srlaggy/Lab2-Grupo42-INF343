@@ -5,7 +5,7 @@ import (
 	sp "lab/namenode/proto/sendPlaysDN"
 	ut "lab/namenode/utils"
 	"time"
-	"fmt"
+	// "fmt"
 	"google.golang.org/grpc"
 )
 
@@ -18,7 +18,7 @@ const (
 
 // ----- FUNCIÓN: enviar jugadas al datanode ----- // --> NameNode actua como cliente
 func SendPlaysDataNode(jugada string, datanode string) {
-	fmt.Println(jugada, "su datanode asignado es:", datanode)
+	// fmt.Println(jugada, "su datanode asignado es:", datanode)
 	// Creamos conexion
 	if(datanode == "Datanode_1"){
 		conn3, err := grpc.Dial(ut.CreateDir(protocolo_grpc, address, "60101"), grpc.WithInsecure(), grpc.WithBlock())
@@ -29,10 +29,9 @@ func SendPlaysDataNode(jugada string, datanode string) {
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 		defer cancel()
 		_,err2 := csp.SendJugadas(ctx, &sp.JugadasReq{Registro: jugada})
-		//🚩 Aqui me caigo FIXME
 		ut.FailOnError(err2, "Failed to send a play")
 		defer conn3.Close()
-	}else if(datanode == "Datanode_3"){
+	}else if(datanode == "Datanode_2"){
 		conn3, err := grpc.Dial(ut.CreateDir(protocolo_grpc, address, "60103"), grpc.WithInsecure(), grpc.WithBlock())
 		ut.FailOnError(err, "Failed to create a connection")
 			// Creamos conexion con el servicio 
@@ -41,10 +40,9 @@ func SendPlaysDataNode(jugada string, datanode string) {
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 		defer cancel()
 		_,err2 := csp.SendJugadas(ctx, &sp.JugadasReq{Registro: jugada})
-		//🚩 Aqui me caigo FIXME
 		ut.FailOnError(err2, "Failed to send a play")
 		defer conn3.Close()
-	}else if(datanode == "Datanode_4"){
+	}else if(datanode == "Datanode_3"){
 		conn3, err := grpc.Dial(ut.CreateDir(protocolo_grpc, address, "60104"), grpc.WithInsecure(), grpc.WithBlock())
 		ut.FailOnError(err, "Failed to create a connection")
 			// Creamos conexion con el servicio 
@@ -53,7 +51,6 @@ func SendPlaysDataNode(jugada string, datanode string) {
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 		defer cancel()
 		_,err2 := csp.SendJugadas(ctx, &sp.JugadasReq{Registro: jugada})
-		//🚩 Aqui me caigo FIXME
 		ut.FailOnError(err2, "Failed to send a play")
 		defer conn3.Close()
 	}

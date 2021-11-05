@@ -3,10 +3,10 @@ package administracionJugadas
 // Datnode
 
 import (
-	/* "context"
-	"log"
-	"net"
-	"time"*/
+	// "context"
+	// "log"
+	// "net"
+	"time"
 	"fmt"
 	"bufio"
 	pr "lab/namenode/src/playerRecordDN"
@@ -37,6 +37,13 @@ func IniciarRegistroJugadas(){
 	defer file.Close()
 }
 
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// FUNCIONES SendPlaysDataNode
+// ----------------------------------->
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Función: elegirDataNode
 // -> Dado una combinación de ronda jugador los asigna a un
@@ -51,6 +58,7 @@ func elegirDataNode(jugador string, ronda string) string {
 	//TO-DO: Reemplazar por las direcciones ip de los pcs de la u,
 	// o las direcciones de prueba segun sea el caso
 	var ip string
+	rand.Seed(time.Now().UnixNano())
 	var seleccionada int= rand.Intn(3)
 	ip = Direcciones[seleccionada]
 	var lineContent string =  jugador + " " + ronda + " " + ip + "\n"
@@ -70,6 +78,33 @@ func elegirDataNode(jugador string, ronda string) string {
 	//TO-DO: Revisar si se hace así
 } */
 
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Función: entregarJugada
+// -> Con la ayuda de encontrarDataNode obtiene la direccion
+// ip para el jugador en la ronda dada y le envia la jugada al
+// dataNode correspondiente para su registro.
+// Recibe: jugador string, ronda string y jugada como string
+// Retorna: jugador string, ronda string y jugada como string
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+func EntregarJugada(dato string) {
+	
+	var ip string = ""
+	
+	s := strings.Split(dato, " ")
+	
+	ip = encontrarDataNode(s[0], s[1], false)
+
+	// ip = "localhost" //DELETE
+	sps.SendPlaysDataNode(dato, ip)
+}
+
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// FUNCIONES PlayerRecordNameNode
+// ----------------------------------->
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Función: encontrarDataNode
@@ -93,9 +128,7 @@ func encontrarDataNode(jugador string, ronda string, flag bool) string{
 	for scanner.Scan(){
 		ubicacion = scanner.Text()
 		s := strings.Split(ubicacion, " ")
-		fmt.Println(jugador, s[0])
-		fmt.Println(ronda, s[1])
-		fmt.Println(s[2])
+		fmt.Println("Jugador:", s[0], "Ronda:", s[1], "Datanode:", s[2])
 		if(jugador == s[0]){
 			if(ronda == s[1]){
 				fmt.Println("Entre!")
@@ -113,27 +146,6 @@ func encontrarDataNode(jugador string, ronda string, flag bool) string{
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Función: entregarJugada
-// -> Con la ayuda de encontrarDataNode obtiene la direccion
-// ip para el jugador en la ronda dada y le envia la jugada al
-// dataNode correspondiente para su registro.
-// Recibe: jugador string, ronda string y jugada como string
-// Retorna: jugador string, ronda string y jugada como string
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-func EntregarJugada(dato string) {
-	
-	var ip string = ""
-	
-	s := strings.Split(dato, " ")
-	
-	ip = encontrarDataNode(s[0], s[1], false)
-
-	// ip = "localhost" //DELETE
-	sps.SendPlaysDataNode(dato, ip)
-}
-
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Función: SolicitarJugadas
 // -> Dada un jugador y una ubicación solicita las jugadas de
 // dicho jugador al dataNode.
@@ -143,19 +155,24 @@ func EntregarJugada(dato string) {
 
 
 func SolicitarJugadas(jugador string, ronda string) string{
-	fmt.Println("He entrado a SolicitarJugadas", jugador, ronda)	
+	fmt.Println("He entrado a SolicitarJugadas", "Jugador:", jugador, "Ronda:", ronda)
 	ip := encontrarDataNode(jugador, ronda, true)
-	if(ip == "No hay jugadas"){
-		fmt.Println("No hay jugadas?")
+	fmt.Println("IP de la ronda del jugador:", ip)
+	if (ip == "No hay jugadas"){
+		fmt.Println("No hay jugada", jugador, ronda)
 		return ip
 	}
 	var jugadas string = ""
 	// ip = "localhost" //DELETE
 	// fmt.Println("Estamos casi")
+	// if (ip == "Datanode_1"){
 	jugadas = pr.PlayerRecordNameNode(jugador, ronda, ip)
+	// }
+	
 	
 	//TO-DO: hacer un request a dataNode, recibir la request y usarlo
 	// en lugar del texto de reemplazo
+	jugadas = "veamos"
 	return jugadas
 }
 
@@ -168,14 +185,14 @@ func SolicitarJugadas(jugador string, ronda string) string{
 // Retorna: todas las jugadas de un jugador
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 func DevolverJugadasRondas(jugador string) string{
-	// fmt.Println("He entrado a DevolverJugadasRondas", jugador)
+	fmt.Println("\nDEVOLVER JUGADAS RONDAS\n")
 	var jugadas string = ""
 	var i int = 0
 	
 	for i < 3{
 		i++
 		num := strconv.Itoa(i)
-		valores := SolicitarJugadas(jugador, num)
+		valores := SolicitarJugadas(jugador, "ronda_" + num)
 		ronda := "Juego " + num + ": " 
 		jugadas = jugadas + ronda + valores + "\n"
 	}

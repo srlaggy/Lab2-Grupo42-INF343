@@ -3,12 +3,13 @@ package dataNodeRegistro
 // Datnode
 
 import (
-	/* "context"
-	   "log"
-	   "net"
-	   "time"
-	   "fmt"
-	   "google.golang.org/grpc" */
+	// "context"
+	// "log"
+	// "net"
+	// "time"
+	// "fmt"
+	// "google.golang.org/grpc"
+	"fmt"
 	"bufio"
 	ut "lab/datanode/utils"
 	"os"
@@ -26,7 +27,7 @@ func main() {
 // Recibe: el jugador y la ronda, ambos como string
 // Retorna: Nada
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  
+
 func CrearRegistroJugadas(registro string){
 
 	//TO-DO: Redefinir el input en caso de ser necesario
@@ -49,7 +50,7 @@ func CrearRegistroJugadas(registro string){
 // Recibe: el jugador, la ronda y la jugada, todos como string
 // Retorna: Nada
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  
+
 func RegistrarJugada(registro string){
 
 	//TO-DO: Redefinir el input en caso de ser necesario
@@ -84,8 +85,6 @@ func RegistrarJugada(registro string){
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 func DevolverJugadas(jugador string, ronda string) string{
-
-	
 	var jugadas string = ""
 	var jugada string
 	
@@ -95,20 +94,18 @@ func DevolverJugadas(jugador string, ronda string) string{
 	//NOTE: jugador_n__ronda_m.txt
 	
 	//Se abre el archivo
+	fmt.Println("Estoy en DevolverJugadas:", jugador, ronda)
 	var fileName string = "utils/playerRecord/" + jugador + "__" + ronda + ".txt"
-	file, error1 := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	file, error1 := os.Open(fileName)
 	ut.FailOnError(error1, "Failed to open file")
-
 	//FIXME: undeclared name: failOnError
-
 	scanner := bufio.NewScanner(file)
-
 	//Recorrer el archivo para registrar las jugadas una a una
     for scanner.Scan(){
 		jugada = scanner.Text()
 		jugadas = jugadas + jugada + " "
     }
-
+	fmt.Println(jugadas)
 	
 	defer file.Close()
 	return jugadas

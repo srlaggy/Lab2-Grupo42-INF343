@@ -20,11 +20,11 @@ func main() {
 	// var ingreso string
 	// var delete string
 
-	aj.EntregarJugada("jugador_3 ronda_4 5")
-	aj.EntregarJugada("jugador_3 ronda_6 4")
-	aj.EntregarJugada("jugador_3 ronda_5 5")
-	aj.EntregarJugada("jugador_3 ronda_1 4")
-	aj.EntregarJugada("jugador_3 ronda_8 5")
+	aj.EntregarJugada("jugador_3 ronda_1 5")
+	aj.EntregarJugada("jugador_3 ronda_2 4")
+	aj.EntregarJugada("jugador_4 ronda_3 5")
+	aj.EntregarJugada("jugador_2 ronda_1 4")
+	aj.EntregarJugada("jugador_3 ronda_2 5")
 	aj.DevolverJugadasRondas("jugador_3")
 	// for{
 	// 	fmt.Println(" 1 Enviar jugada \n 2 Pedir jugadas \n 3 Salir \n" )

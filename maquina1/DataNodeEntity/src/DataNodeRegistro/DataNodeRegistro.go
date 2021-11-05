@@ -100,12 +100,12 @@ func DevolverJugadas(jugador string, ronda string) string{
 	ut.FailOnError(error1, "Failed to open file")
 	//FIXME: undeclared name: failOnError
 	scanner := bufio.NewScanner(file)
-	fmt.Println(scanner)
 	//Recorrer el archivo para registrar las jugadas una a una
     for scanner.Scan(){
 		jugada = scanner.Text()
 		jugadas = jugadas + jugada + " "
     }
+	fmt.Println(jugadas)
 	
 	defer file.Close()
 	return jugadas
