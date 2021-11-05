@@ -9,7 +9,6 @@ import (
 	"google.golang.org/grpc"
 	ut "lab/jugador/utils"
 	lj "lab/jugador/proto/LJ"
-	// rg "lab/jugador/src/requestGameLJ"
 	e2 "lab/jugador/src/EtapaDosLJ"
 )
 
@@ -52,10 +51,12 @@ func Etapa3Conn(nroJugador int64, wg *sync.WaitGroup) {
 	r,err2 := csp.Etapa2Conn(ctx, &lj.E2ConnReq{NroJugador: nroJugador})
 	ut.FailOnError(err2, "Failed to send a petition")
 	numGrp[FindIndex(nroJugador, jugadoresE3)] = r.GetNroGroup()
-	if (int(r.GetNroGroup()) != 10){
-		fmt.Println("Mi numero de grupo es:", r.GetNroGroup())
+	if (int(r.GetNroGroup()) != 10 && nroJugador==1){
+		fmt.Println("Formas parte de la pareja", r.GetNroGroup())
 	}else{
-		fmt.Println("Mala suerte, he muerto porque el total de jugadores era impar", nroJugador)
+		if nroJugador==1{
+			fmt.Println("Nadie te eligio como pareja, estas muerto. BANG!!", nroJugador)
+		}
 		nromuerto = int(nroJugador)
 		vivosE3[FindIndex(nroJugador, jugadoresE3)] = false
 		cantVivos -= 1
@@ -64,7 +65,6 @@ func Etapa3Conn(nroJugador int64, wg *sync.WaitGroup) {
 
 func Etapa3(nroJugador int64, numero int64) {
 	// Creamos conexion
-	fmt.Println("Entre")
 	conn3, err := grpc.Dial(ut.CreateDir(protocolo_grpc, address, port_grpc), grpc.WithInsecure(), grpc.WithBlock())
 	ut.FailOnError(err, "Failed to create a connection")
 	defer conn3.Close()
@@ -107,7 +107,6 @@ func Etapa3Trigger(){
 		if jugadoresE3[i]==1{
 			go HumanE3(jugadoresE3[i], &wg2)
 		} else {
-			// go Etapa3Conn(jugadoresE3[i], &wg)
 			go BotE3(jugadoresE3[i], &wg2)
 		}
 	}
@@ -149,9 +148,10 @@ func HumanE3(nroJugador int64, wg *sync.WaitGroup){
 		vivosE3[FindIndex(nroJugador, jugadoresE3)] = false
 		cantVivos -= 1
 	} else if respuesta[FindIndex(nroJugador, jugadoresE3)]==1{
-		fmt.Println("\nImpresionante!! Eres el ganador de lso jeugos del Calamar\n")
+		fmt.Println("\nImpresionante!! Eres el ganador de los juegos del Calamar\n")
+		fmt.Println("Escapa de la isla!!! Esta sera destruida en 15 segundos.\n")
 	}
-	time.Sleep(5*time.Second)
+	time.Sleep(10*time.Second)
 }
 
 func BotE3(nroJugador int64, wg *sync.WaitGroup){

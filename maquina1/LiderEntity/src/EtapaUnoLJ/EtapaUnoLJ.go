@@ -2,7 +2,7 @@ package EtapaUnoLJ
 
 import (
 	"context"
-	// "log"
+	"strconv"
 	"net"
 	"fmt"
 	"math/rand"
@@ -11,6 +11,7 @@ import (
 	lj "lab/lider/proto/LJ"
 	ut "lab/lider/utils"
 	sg "lab/lider/src/startGameL"
+	sp "lab/lider/src/sendPlaysNL"
 )
 
 const (
@@ -36,6 +37,9 @@ type server struct {
 func (s *server) EtapaUno(ctx context.Context, in *lj.NumPasosReq) (*lj.NumPasosResp, error) {
 	// 3 gano el juego (sin importar la ronda) - 2 muerto por rondas - 1 vivo - 0 muerto
 	var msg int64 = 1
+	// Se llama a la funcion sendPlaysNL para que el lider envie su jugada al NameNode
+    // ejemplo de jugada: "Jugador_2 Ronda_2 jugada_1"
+    sp.SendPlaysLider("Jugador_"+strconv.FormatInt(in.NroJugador,10)+" Ronda_1 "+strconv.FormatInt(in.PlayMsg,10))
 	if in.PlayMsg >= int64(nroLider[in.Ronda]){
 		sg.SetVivos(int(in.NroJugador)-1, false)
 		// ya jugo el juego

@@ -18,3 +18,8 @@
 /.vscode/
 ProtoPath.txt
 maquina1/DataNodeEntity/bin/jugador_1__ronda_1.txt
+
+# no subir los txt
+/maquina1/DataNodeEntity/utils/playerRecord/*.txt
+/maquina3/DataNodeEntity/utils/playerRecord/*.txt
+/maquina4/DataNodeEntity/utils/playerRecord/*.txt

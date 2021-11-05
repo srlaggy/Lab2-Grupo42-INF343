@@ -2,16 +2,17 @@ package EtapaTresLJ
 
 import (
 	"context"
-	// "log"
 	"net"
 	"fmt"
 	"math/rand"
 	"math"
 	"time"
+	"strconv"
 	"google.golang.org/grpc"
 	lj "lab/lider/proto/LJ"
 	sg "lab/lider/src/startGameL"
 	ut "lab/lider/utils"
+	sp "lab/lider/src/sendPlaysNL"
 )
 
 const (
@@ -42,26 +43,27 @@ type server struct {
 
 // funcion: tercer juego (reutilizamos protos y servicios)
 func (s *server) Etapa2Conn(ctx context.Context, in *lj.E2ConnReq) (*lj.E2ConnResp, error) {
-	fmt.Println("Ingreso el jugador: ", in.NroJugador)
 	if (in.NroJugador == num_eliminado){
 		return &lj.E2ConnResp{NroGroup: 10}, nil
 	}
 	nro_group_jugador := contains(lista_parejas, in.NroJugador)
-	return &lj.E2ConnResp{NroGroup: int64(nro_group_jugador)}, nil // tu moriste
+	return &lj.E2ConnResp{NroGroup: int64(nro_group_jugador + 1)}, nil // tu moriste
 }
 
 func (s *server) Etapa2(ctx context.Context, in *lj.Etapa2Req) (*lj.Etapa2Resp, error) {
-	fmt.Println("Entra a jugar: ", in.NroJugador)
 	nro_group_jugador_i := contains(lista_parejas, in.NroJugador)
 	nro_group_jugador_j := contains_subslice(lista_parejas, nro_group_jugador_i, in.NroJugador)
 	lista_num_parejas[nro_group_jugador_i][nro_group_jugador_j] = in.Numero
+
+	// Se llama a la funcion sendPlaysNL para que el lider envie su jugada al NameNode
+    // ejemplo de jugada: "Jugador_2 Ronda_2 jugada_1"
+    sp.SendPlaysLider("Jugador_"+strconv.FormatInt(in.NroJugador,10)+" Ronda_3 "+strconv.FormatInt(in.Numero,10))
+
 	// loop
 	jugadores_inter_etapa3 += 1
-	fmt.Println(in.NroJugador, "esperando y su numero fue:", in.Numero, ", jugadores en la etapa:", jugadores_inter_etapa3)
 	for (jugadores_inter_etapa3 < vivostotales){
 	}
 	valor_bool := comparacion_final(nro_group_jugador_i, nro_group_jugador_j)
-	fmt.Println("jugador:", in.NroJugador, "se salva?", valor_bool)
 	// 1 - vive
 	// 0 - muere
 	if (valor_bool == true){
@@ -108,7 +110,6 @@ func ParidadEtapa3() (int, bool, []int64){
 			c++
 		}
 	}
-	fmt.Println("Jugadores vivos:", jugadores_vivos)
 	if(c % 2 == 0){
 		return c, true, jugadores_vivos
 	}else{
@@ -126,10 +127,7 @@ func Parejas(){
 		num_eliminado = lista_vivos[nro_azar]			// el idJugador
 		sg.SetVivos(int(num_eliminado)-1, false)		// se setea a false el jugador
 		cantvivos = cantvivos-1
-		fmt.Println("Nro eliminado:", num_eliminado, ", cantidad de vivos:", cantvivos)
-		fmt.Println("lista_vivos antes de remove:", lista_vivos)
-		lista_vivos := remove(lista_vivos, FindIndex(num_eliminado, lista_vivos))
-		fmt.Println("lista_vivos luego de remove:", lista_vivos)
+		lista_vivos = remove(lista_vivos, FindIndex(num_eliminado, lista_vivos))
 	}
 	vivostotales = cantvivos
 	// se crea una lista aleatoria entre 1 y  la cantidad de jugadores vivos cantvivos
@@ -224,20 +222,21 @@ func GetNroLider() int64{
 	return nroLider
 }
 
+func GetVivosTotales() int{
+	return vivostotales
+}
+
 //------------------------------------------------------//
 //----------------------REQUEST-------------------------//
 //------------------------------------------------------//
 
 // funciones: crea la conexión
 func Grpc_func() {
-	fmt.Println("Lista parejas inicio:", lista_parejas)
-	fmt.Println("El numero del lider es:", nroLider)
 	lis, err := net.Listen(protocolo_grpc, ":"+port_grpc1)
 	ut.FailOnError(err, "Failed to listen")
 
 	s := grpc.NewServer()
 	lj.RegisterLiderJugadorServiceServer(s, &server{})
-	// log.Printf("Servidor grpc escuchando en el puerto %v", port_grpc1)
 	ut.FailOnError(s.Serve(lis), "Failed to serve")
 }
 
@@ -248,6 +247,6 @@ func LoopAux(){
 			break
 		}
 	}
-	fmt.Println("60 segundos para el cierre")
-	time.Sleep(60*time.Second)
+	fmt.Println("\nFin del juego!")
+	time.Sleep(5*time.Second)
 }

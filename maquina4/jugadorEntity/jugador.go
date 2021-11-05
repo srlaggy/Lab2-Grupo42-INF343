@@ -46,7 +46,7 @@ func main(){
 	e3.Etapa3ConnTrigger()
 	time.Sleep(2*time.Second)
 	e3.Etapa3Trigger()
-	time.Sleep(5*time.Second)
+	time.Sleep(10*time.Second)
 
 	fmt.Println(e3.GetJugadoresE3())
 	fmt.Println(e3.GetVivosE3())

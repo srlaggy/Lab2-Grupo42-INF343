@@ -2,7 +2,7 @@ package EtapaDosLJ
 
 import (
 	"context"
-	// "log"
+	"strconv"
 	"net"
 	"fmt"
 	"math/rand"
@@ -11,6 +11,7 @@ import (
 	lj "lab/lider/proto/LJ"
 	sg "lab/lider/src/startGameL"
 	ut "lab/lider/utils"
+	sp "lab/lider/src/sendPlaysNL"
 )
 
 const (
@@ -71,6 +72,10 @@ func (s *server) Etapa2(ctx context.Context, in *lj.Etapa2Req) (*lj.Etapa2Resp, 
 	}else if (contains(group2, in.NroJugador)){
 		num_group2 = num_group2 + in.Numero
 	}
+
+	// Se llama a la funcion sendPlaysNL para que el lider envie su jugada al NameNode
+    // ejemplo de jugada: "Jugador_2 Ronda_2 jugada_1"
+    sp.SendPlaysLider("Jugador_"+strconv.FormatInt(in.NroJugador,10)+" Ronda_2 "+strconv.FormatInt(in.Numero,10))
 
 	jugaron[FindIndex(in.NroJugador, jugadoresE2)] = true
 	return &lj.Etapa2Resp{StateMsg: 99}, nil

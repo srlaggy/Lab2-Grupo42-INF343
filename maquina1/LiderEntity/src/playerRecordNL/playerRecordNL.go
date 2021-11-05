@@ -3,7 +3,7 @@ package playerRecordNL
 import (
 	"context"
 	"time"
-	"fmt"
+	// "fmt"
 	"google.golang.org/grpc"
 	ut "lab/lider/utils"
 	pr "lab/lider/proto/playerRecordNL"
@@ -19,7 +19,7 @@ const (
 
 // ----- FUNCIÓN: enviar jugadas al NameNode ----- // --> Lider actua como cliente
 // jugador: "jugador_3"
-func PlayerRecordLider(jugador string) {
+func PlayerRecordLider(jugador string) string{
 	// Creamos conexion
 	conn, err := grpc.Dial(ut.CreateDir(protocolo_grpc, address, port_grpc), grpc.WithInsecure(), grpc.WithBlock())
 	ut.FailOnError(err, "Failed to create a connection")
@@ -32,6 +32,6 @@ func PlayerRecordLider(jugador string) {
 	defer cancel()
 	resp_record,err2 := cpr.PlayerRecord(ctx, &pr.PlayerReq{Player: jugador})
 	ut.FailOnError(err2, "Failed to send a play")
-	fmt.Printf("El registro del jugador es: %s \n", resp_record.GetRecords())
-
+	// fmt.Printf("El registro del jugador es: %s \n", resp_record.GetRecords())
+	return resp_record.GetRecords()
 }
