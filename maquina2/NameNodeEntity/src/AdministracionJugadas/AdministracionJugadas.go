@@ -115,7 +115,6 @@ func EntregarJugada(dato string) {
 // Retorna: jugador string, ronda string y jugada como string
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 func encontrarDataNode(jugador string, ronda string, flag bool) string{
-	// fmt.Println("He entrado a encontrarDataNode", jugador, ronda)
 	var ip string= "No hay jugadas"
 	fileName := "utils/jugadas.txt"
 	file, error1 := os.Open(fileName)
@@ -124,14 +123,11 @@ func encontrarDataNode(jugador string, ronda string, flag bool) string{
 
 	scanner := bufio.NewScanner(file)
 	var ubicacion string
-	// fmt.Println(scanner)
 	for scanner.Scan(){
 		ubicacion = scanner.Text()
 		s := strings.Split(ubicacion, " ")
-		fmt.Println("Jugador:", s[0], "Ronda:", s[1], "Datanode:", s[2])
 		if(jugador == s[0]){
 			if(ronda == s[1]){
-				fmt.Println("Entre!")
 				ip = s[2]
 				flag = true
 			}
@@ -155,16 +151,12 @@ func encontrarDataNode(jugador string, ronda string, flag bool) string{
 
 
 func SolicitarJugadas(jugador string, ronda string) string{
-	fmt.Println("He entrado a SolicitarJugadas", "Jugador:", jugador, "Ronda:", ronda)
 	ip := encontrarDataNode(jugador, ronda, true)
-	fmt.Println("IP de la ronda del jugador:", ip)
 	if (ip == "No hay jugadas"){
-		fmt.Println("No hay jugada", jugador, ronda)
 		return ip
 	}
 	var jugadas string = ""
 	// ip = "localhost" //DELETE
-	// fmt.Println("Estamos casi")
 	// if (ip == "Datanode_1"){
 	jugadas = pr.PlayerRecordNameNode(jugador, ronda, ip)
 	// }
@@ -185,7 +177,6 @@ func SolicitarJugadas(jugador string, ronda string) string{
 // Retorna: todas las jugadas de un jugador
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 func DevolverJugadasRondas(jugador string) string{
-	fmt.Println("\nDEVOLVER JUGADAS RONDAS\n")
 	var jugadas string = ""
 	var i int = 0
 	

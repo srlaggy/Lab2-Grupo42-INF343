@@ -24,9 +24,9 @@ type server struct {
 
 // funcion: conecta con el service SendPlays
 func (s *server) SendPlays(ctx context.Context, in *sp.PlaysReq) (*sp.PlaysResp, error) {
-	log.Printf("Received %v", in.Play) // 
-	am.EntregarJugada(in.Play)
-	return &sp.PlaysResp{}, nil
+	log.Printf("Received %v", in.Play)	// se recibe jugada
+	am.EntregarJugada(in.Play)			// se llama a la funcion EntregarJugada del NameNode para envier al DataNode
+	return &sp.PlaysResp{}, nil			// No se retorna nada al lider
 }
 
 // funciones: crea la conexión

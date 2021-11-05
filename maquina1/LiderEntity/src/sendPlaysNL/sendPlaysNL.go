@@ -17,6 +17,7 @@ const (
 // --------------- FUNCIONES GRPC --------------- //
 
 // ----- FUNCIÓN: enviar jugadas al NameNode ----- // --> Lider actua como cliente
+// ejemplo de jugada: "Jugador_2 Ronda_2 jugada_1"
 func SendPlaysLider(jugada string) {
 	// Creamos conexion
 	conn3, err := grpc.Dial(ut.CreateDir(protocolo_grpc, address, port_grpc), grpc.WithInsecure(), grpc.WithBlock())
