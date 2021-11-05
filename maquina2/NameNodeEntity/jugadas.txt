@@ -1,6 +1,0 @@
-jugador_2 ronda_4 Datanode_3
-jugador_3 ronda_6 Datanode_1
-jugador_3 ronda_5 Datanode_3
-jugador_2 ronda_4 Datanode_3
-jugador_3 ronda_6 Datanode_1
-jugador_3 ronda_5 Datanode_3

@@ -50,10 +50,19 @@ message E2FinResp{
     int64 dead = 1;
 }
 
+message MontoJugReq{
+    int64 trigger = 1;
+}
+
+message MontoJugResp{
+    int64 montoJugador = 1;
+}
+
 service LiderJugadorService{
     rpc RequestGame(GameReq) returns (GameResp);
     rpc EtapaUno(NumPasosReq) returns (NumPasosResp);
     rpc Etapa2Conn(E2ConnReq) returns (E2ConnResp);
     rpc Etapa2(Etapa2Req) returns (Etapa2Resp);
     rpc Etapa2Fin(E2FinReq) returns (E2FinResp);
+    rpc MontoJug(MontoJugReq) returns (MontoJugResp);
 }

@@ -3,13 +3,6 @@ package dataNodeRegistro
 // Datnode
 
 import (
-	// "context"
-	// "log"
-	// "net"
-	// "time"
-	// "fmt"
-	// "google.golang.org/grpc"
-	"fmt"
 	"bufio"
 	ut "lab/datanode/utils"
 	"os"
@@ -94,7 +87,6 @@ func DevolverJugadas(jugador string, ronda string) string{
 	//NOTE: jugador_n__ronda_m.txt
 	
 	//Se abre el archivo
-	fmt.Println("Estoy en DevolverJugadas:", jugador, ronda)
 	var fileName string = "utils/playerRecord/" + jugador + "__" + ronda + ".txt"
 	file, error1 := os.Open(fileName)
 	ut.FailOnError(error1, "Failed to open file")
@@ -105,7 +97,6 @@ func DevolverJugadas(jugador string, ronda string) string{
 		jugada = scanner.Text()
 		jugadas = jugadas + jugada + " "
     }
-	fmt.Println(jugadas)
 	
 	defer file.Close()
 	return jugadas

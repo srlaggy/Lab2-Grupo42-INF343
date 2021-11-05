@@ -156,15 +156,8 @@ func SolicitarJugadas(jugador string, ronda string) string{
 		return ip
 	}
 	var jugadas string = ""
-	// ip = "localhost" //DELETE
-	// if (ip == "Datanode_1"){
 	jugadas = pr.PlayerRecordNameNode(jugador, ronda, ip)
-	// }
-	
-	
-	//TO-DO: hacer un request a dataNode, recibir la request y usarlo
-	// en lugar del texto de reemplazo
-	jugadas = "veamos"
+
 	return jugadas
 }
 
@@ -183,7 +176,7 @@ func DevolverJugadasRondas(jugador string) string{
 	for i < 3{
 		i++
 		num := strconv.Itoa(i)
-		valores := SolicitarJugadas(jugador, "ronda_" + num)
+		valores := SolicitarJugadas(jugador, "Ronda_" + num)
 		ronda := "Juego " + num + ": " 
 		jugadas = jugadas + ronda + valores + "\n"
 	}

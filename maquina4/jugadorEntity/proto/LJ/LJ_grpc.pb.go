@@ -23,6 +23,7 @@ type LiderJugadorServiceClient interface {
 	Etapa2Conn(ctx context.Context, in *E2ConnReq, opts ...grpc.CallOption) (*E2ConnResp, error)
 	Etapa2(ctx context.Context, in *Etapa2Req, opts ...grpc.CallOption) (*Etapa2Resp, error)
 	Etapa2Fin(ctx context.Context, in *E2FinReq, opts ...grpc.CallOption) (*E2FinResp, error)
+	MontoJug(ctx context.Context, in *MontoJugReq, opts ...grpc.CallOption) (*MontoJugResp, error)
 }
 
 type liderJugadorServiceClient struct {
@@ -78,6 +79,15 @@ func (c *liderJugadorServiceClient) Etapa2Fin(ctx context.Context, in *E2FinReq,
 	return out, nil
 }
 
+func (c *liderJugadorServiceClient) MontoJug(ctx context.Context, in *MontoJugReq, opts ...grpc.CallOption) (*MontoJugResp, error) {
+	out := new(MontoJugResp)
+	err := c.cc.Invoke(ctx, "/LJ.LiderJugadorService/MontoJug", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // LiderJugadorServiceServer is the server API for LiderJugadorService service.
 // All implementations must embed UnimplementedLiderJugadorServiceServer
 // for forward compatibility
@@ -87,6 +97,7 @@ type LiderJugadorServiceServer interface {
 	Etapa2Conn(context.Context, *E2ConnReq) (*E2ConnResp, error)
 	Etapa2(context.Context, *Etapa2Req) (*Etapa2Resp, error)
 	Etapa2Fin(context.Context, *E2FinReq) (*E2FinResp, error)
+	MontoJug(context.Context, *MontoJugReq) (*MontoJugResp, error)
 	mustEmbedUnimplementedLiderJugadorServiceServer()
 }
 
@@ -108,6 +119,9 @@ func (UnimplementedLiderJugadorServiceServer) Etapa2(context.Context, *Etapa2Req
 }
 func (UnimplementedLiderJugadorServiceServer) Etapa2Fin(context.Context, *E2FinReq) (*E2FinResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Etapa2Fin not implemented")
+}
+func (UnimplementedLiderJugadorServiceServer) MontoJug(context.Context, *MontoJugReq) (*MontoJugResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MontoJug not implemented")
 }
 func (UnimplementedLiderJugadorServiceServer) mustEmbedUnimplementedLiderJugadorServiceServer() {}
 
@@ -212,6 +226,24 @@ func _LiderJugadorService_Etapa2Fin_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _LiderJugadorService_MontoJug_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MontoJugReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LiderJugadorServiceServer).MontoJug(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/LJ.LiderJugadorService/MontoJug",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LiderJugadorServiceServer).MontoJug(ctx, req.(*MontoJugReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // LiderJugadorService_ServiceDesc is the grpc.ServiceDesc for LiderJugadorService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -238,6 +270,10 @@ var LiderJugadorService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Etapa2Fin",
 			Handler:    _LiderJugadorService_Etapa2Fin_Handler,
+		},
+		{
+			MethodName: "MontoJug",
+			Handler:    _LiderJugadorService_MontoJug_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

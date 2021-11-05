@@ -20,6 +20,9 @@ const (
 	max = 10
 )
 
+// global
+var vivosAux []bool
+
 // determina numero random del jugador
 func RandomNumber(num int64) int64{
 	rand.Seed(time.Now().UnixNano() + num*5)
@@ -53,7 +56,6 @@ func StartGameUno(wg *sync.WaitGroup){
 	defer wg.Done()
 	var eleccion int64
 	nroAux := rg.GetNumeroJugador()
-	vivosAux := rg.GetVivosSlice()
 	fmt.Println("\nInicio Juego 1")
 	fmt.Println("Debe ingresar numeros entre 1 y 10 durante 4 rondas")
 	fmt.Println("Usted muere si no suma 21 al final de la cuarta ronda")
@@ -113,7 +115,6 @@ func StartGameUno(wg *sync.WaitGroup){
 func StartGameUnoBot(numeroJugadorBot int64, wg *sync.WaitGroup){
 	defer wg.Done()
 	var sumador int64 = 0
-	vivosAux := rg.GetVivosSlice()
 	for i:=0; i<4; i++{
 		aux := RandomNumber(int64(i)*numeroJugadorBot)
 		resp := EtapaUno(aux, sumador, int64(i), numeroJugadorBot)
@@ -137,6 +138,8 @@ func StartGameUnoBot(numeroJugadorBot int64, wg *sync.WaitGroup){
 }
 
 func StartGameUnoTrigger(){
+	vivosAux = rg.GetVivosSlice()
+	time.Sleep(5*time.Second)
 	// wait groups
 	var wg sync.WaitGroup
 	wg.Add(rg.GetMaxJug())

@@ -13,11 +13,37 @@ import (
 	e1 "lab/lider/src/EtapaUnoLJ"
 	e2 "lab/lider/src/EtapaDosLJ"
 	e3 "lab/lider/src/EtapaTresLJ"
+	// "google.golang.org/grpc"
 	"time"
 	"fmt"
 	"sync"
 	"strconv"
 )
+
+// const (
+// 	protocolo_grpc = "tcp"
+// 	port_grpc = "41000"
+// )
+
+// func (s *server) RequestGame(ctx context.Context, in *lj.GameReq) (*lj.GameResp, error) {
+// 	value := sg.AddPlayerGame()
+// 	mensajeDeEntrada = "\nEl juego ya comenzó. No puedes ingresar.\n"
+// 	if value!=0{
+// 		mensajeDeEntrada = fmt.Sprintf("\nEstas dentro del juego. Eres el jugador %d\n", value)
+// 		log.Printf("Entry Received")
+// 	}
+// 	return &lj.GameResp{GameMsg: mensajeDeEntrada, NroJugador: value}, nil
+// }
+
+// // --------------- FUNCION PRINCIPAL --------------- //
+// func Grpc_func_pozo() {
+// 	lis, err := net.Listen(protocolo_grpc, ":"+port_grpc)
+// 	ut.FailOnError(err, "Failed to listen")
+
+// 	s := grpc.NewServer()
+// 	lj.RegisterLiderJugadorServiceServer(s, &server{})
+// 	ut.FailOnError(s.Serve(lis), "Failed to serve")
+// }
 
 // funcion para crear interfaz
 func interfaz(wg *sync.WaitGroup){
@@ -46,9 +72,8 @@ func interfaz(wg *sync.WaitGroup){
 			fmt.Scanln(&eleccion2)
 		}
 		strings := pr.PlayerRecordLider("Jugador_" + strconv.Itoa(int(eleccion2)))
-		fmt.Println("Imprimiendo jugada")
+		fmt.Println("Imprimiendo Jugadas")
 		fmt.Println(strings)
-		fmt.Println("Imprimiendo jugada")
 		time.Sleep(3*time.Second)
 		fmt.Println("Ahora avanzamos a la siguiente etapa")
 	} else if eleccion==2{
@@ -61,6 +86,9 @@ func interfaz(wg *sync.WaitGroup){
 func main(){
 	// ----- FUNCIÓN: recibir entradas de jugadores al juego ----- //
 	go rg.Grpc_func()
+
+	// server de pedir monto al pozo
+	// go Grpc_func_pozo()
 
 	// Crea arreglo de jugadores para el juego e inicia loop hasta obtener todos los jugadores
 	sg.StartGame()
