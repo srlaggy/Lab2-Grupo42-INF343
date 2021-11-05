@@ -6,19 +6,19 @@ import (
 	pr "lab/namenode/proto/playerRecordDN"
 	ut "lab/namenode/utils"
 	"time"
-
 	"google.golang.org/grpc"
 )
 
 const (
 	protocolo_grpc = ""
-	port_grpc = "60100"
+	port_grpc = "60111"
 )
 
 // --------------- FUNCIONES GRPC --------------- //
 
 // ----- FUNCIÓN: enviar jugadas al datanode ----- // --> Namenode actua como cliente
 func PlayerRecordNameNode(jugador string, game string, address string) string{
+	fmt.Println("He entrado a PlayerRecordGame con:", jugador, game)
 	// Creamos conexion
 	conn, err := grpc.Dial(ut.CreateDir(protocolo_grpc, address, port_grpc), grpc.WithInsecure(), grpc.WithBlock())
 	ut.FailOnError(err, "Failed to create a connection")

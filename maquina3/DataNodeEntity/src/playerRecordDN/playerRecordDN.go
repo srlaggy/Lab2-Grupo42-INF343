@@ -15,7 +15,7 @@ import (
 const (
 	address = "localhost"
 	protocolo_grpc = "tcp"
-	port_grpc = "60111" //Cambiar puerto y direccion
+	port_grpc = "60113" //Cambiar puerto y direccion
 )
 
 // ----- FUNCIÓN: Devolver registro del jugador ----- // --> DataNode actua como servidor
@@ -24,8 +24,8 @@ type server struct {
 }
 
 // funcion: conecta con el service Record
-func (s *server) SendRecord(ctx context.Context, in *rp.RecordReq) (*rp.RecordResp, error) {
-	log.Printf("jugadas del jugador %v", in.Player)
+func (s *server) Record(ctx context.Context, in *rp.RecordReq) (*rp.RecordResp, error) {
+	log.Printf("Received %v", in.Player) // 
 	return &rp.RecordResp{Record: dr.DevolverJugadas(in.Player, in.Game)}, nil
 }
 

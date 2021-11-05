@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option go_package = "lab/dataNode";
+
+package sendPlaysDN;
+
+message JugadasResp{
+}
+
+message JugadasReq{
+    string registro = 1;
+}
+
+service JugadasService{
+    rpc SendJugadas(JugadasReq) returns (JugadasResp);
+}

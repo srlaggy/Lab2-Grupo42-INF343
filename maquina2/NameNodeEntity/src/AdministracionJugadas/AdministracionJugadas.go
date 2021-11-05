@@ -7,7 +7,7 @@ import (
 	"log"
 	"net"
 	"time"*/
-
+	"fmt"
 	"bufio"
 	pr "lab/namenode/src/playerRecordDN"
 	sps "lab/namenode/src/sendPlaysDN"
@@ -28,10 +28,10 @@ func main() {
 // Recibe: Nada
 // Retorna: Nada
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  
+
 func IniciarRegistroJugadas(){
 	//Se crea el archivo
-	var fileName string =  "jugadas.txt"
+	var fileName string =  "utils/jugadas.txt"
 	file, err := os.Create(fileName)
 	ut.FailOnError(err, "Failed to create file")
 	defer file.Close()
@@ -54,14 +54,13 @@ func elegirDataNode(jugador string, ronda string) string {
 	var seleccionada int= rand.Intn(3)
 	ip = Direcciones[seleccionada]
 	var lineContent string =  jugador + " " + ronda + " " + ip + "\n"
-	var fileName string = "jugadas.txt"
+	var fileName string = "utils/jugadas.txt"
 	file, error1 := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	ut.FailOnError(error1, "Failed to open file")
 	_, error2 := file.WriteString(lineContent)
 	ut.FailOnError(error2, "Failed to write file")
 	defer file.Close()
-
-	ip = "localhost" //DELETE
+	// ip = "localhost" //DELETE
 	return ip
 }
 
@@ -81,31 +80,35 @@ func elegirDataNode(jugador string, ronda string) string {
 // Retorna: jugador string, ronda string y jugada como string
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 func encontrarDataNode(jugador string, ronda string, flag bool) string{
+	// fmt.Println("He entrado a encontrarDataNode", jugador, ronda)
 	var ip string= "No hay jugadas"
-
-	
-	file, error1 := os.OpenFile("jugadas.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	fileName := "utils/jugadas.txt"
+	file, error1 := os.Open(fileName)
 	ut.FailOnError(error1, "Failed to open file")
 	defer file.Close()
+
 	scanner := bufio.NewScanner(file)
 	var ubicacion string
+	// fmt.Println(scanner)
 	for scanner.Scan(){
 		ubicacion = scanner.Text()
 		s := strings.Split(ubicacion, " ")
+		fmt.Println(jugador, s[0])
+		fmt.Println(ronda, s[1])
+		fmt.Println(s[2])
 		if(jugador == s[0]){
 			if(ronda == s[1]){
+				fmt.Println("Entre!")
 				ip = s[2]
 				flag = true
 			}
 		}
-
     }
 	
-
 	if(!flag){
 		ip = elegirDataNode(jugador, ronda)
 	}
-	ip = "localhost" //DELETE
+	// ip = "localhost" //DELETE
 	return ip
 }
 
@@ -121,13 +124,12 @@ func encontrarDataNode(jugador string, ronda string, flag bool) string{
 func EntregarJugada(dato string) {
 	
 	var ip string = ""
-	 
-
+	
 	s := strings.Split(dato, " ")
 	
 	ip = encontrarDataNode(s[0], s[1], false)
 
-	ip = "localhost" //DELETE
+	// ip = "localhost" //DELETE
 	sps.SendPlaysDataNode(dato, ip)
 }
 
@@ -141,22 +143,19 @@ func EntregarJugada(dato string) {
 
 
 func SolicitarJugadas(jugador string, ronda string) string{
-		
+	fmt.Println("He entrado a SolicitarJugadas", jugador, ronda)	
 	ip := encontrarDataNode(jugador, ronda, true)
 	if(ip == "No hay jugadas"){
+		fmt.Println("No hay jugadas?")
 		return ip
 	}
-
 	var jugadas string = ""
-
-	ip = "localhost" //DELETE
-	
+	// ip = "localhost" //DELETE
+	// fmt.Println("Estamos casi")
 	jugadas = pr.PlayerRecordNameNode(jugador, ronda, ip)
 	
-
 	//TO-DO: hacer un request a dataNode, recibir la request y usarlo
 	// en lugar del texto de reemplazo
-
 	return jugadas
 }
 
@@ -169,6 +168,7 @@ func SolicitarJugadas(jugador string, ronda string) string{
 // Retorna: todas las jugadas de un jugador
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 func DevolverJugadasRondas(jugador string) string{
+	// fmt.Println("He entrado a DevolverJugadasRondas", jugador)
 	var jugadas string = ""
 	var i int = 0
 	

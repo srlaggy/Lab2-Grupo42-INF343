@@ -1,5 +1,7 @@
 package main
 
+// DATANODE1
+
 import (
 	prd "lab/datanode/src/playerRecordDN"
 	spd "lab/datanode/src/sendPlaysDN"
