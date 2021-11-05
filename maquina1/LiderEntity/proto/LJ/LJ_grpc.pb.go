@@ -22,6 +22,7 @@ type LiderJugadorServiceClient interface {
 	EtapaUno(ctx context.Context, in *NumPasosReq, opts ...grpc.CallOption) (*NumPasosResp, error)
 	Etapa2Conn(ctx context.Context, in *E2ConnReq, opts ...grpc.CallOption) (*E2ConnResp, error)
 	Etapa2(ctx context.Context, in *Etapa2Req, opts ...grpc.CallOption) (*Etapa2Resp, error)
+	Etapa2Fin(ctx context.Context, in *E2FinReq, opts ...grpc.CallOption) (*E2FinResp, error)
 }
 
 type liderJugadorServiceClient struct {
@@ -68,6 +69,15 @@ func (c *liderJugadorServiceClient) Etapa2(ctx context.Context, in *Etapa2Req, o
 	return out, nil
 }
 
+func (c *liderJugadorServiceClient) Etapa2Fin(ctx context.Context, in *E2FinReq, opts ...grpc.CallOption) (*E2FinResp, error) {
+	out := new(E2FinResp)
+	err := c.cc.Invoke(ctx, "/LJ.LiderJugadorService/Etapa2Fin", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // LiderJugadorServiceServer is the server API for LiderJugadorService service.
 // All implementations must embed UnimplementedLiderJugadorServiceServer
 // for forward compatibility
@@ -76,6 +86,7 @@ type LiderJugadorServiceServer interface {
 	EtapaUno(context.Context, *NumPasosReq) (*NumPasosResp, error)
 	Etapa2Conn(context.Context, *E2ConnReq) (*E2ConnResp, error)
 	Etapa2(context.Context, *Etapa2Req) (*Etapa2Resp, error)
+	Etapa2Fin(context.Context, *E2FinReq) (*E2FinResp, error)
 	mustEmbedUnimplementedLiderJugadorServiceServer()
 }
 
@@ -94,6 +105,9 @@ func (UnimplementedLiderJugadorServiceServer) Etapa2Conn(context.Context, *E2Con
 }
 func (UnimplementedLiderJugadorServiceServer) Etapa2(context.Context, *Etapa2Req) (*Etapa2Resp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Etapa2 not implemented")
+}
+func (UnimplementedLiderJugadorServiceServer) Etapa2Fin(context.Context, *E2FinReq) (*E2FinResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Etapa2Fin not implemented")
 }
 func (UnimplementedLiderJugadorServiceServer) mustEmbedUnimplementedLiderJugadorServiceServer() {}
 
@@ -180,6 +194,24 @@ func _LiderJugadorService_Etapa2_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _LiderJugadorService_Etapa2Fin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(E2FinReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LiderJugadorServiceServer).Etapa2Fin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/LJ.LiderJugadorService/Etapa2Fin",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LiderJugadorServiceServer).Etapa2Fin(ctx, req.(*E2FinReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // LiderJugadorService_ServiceDesc is the grpc.ServiceDesc for LiderJugadorService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -202,6 +234,10 @@ var LiderJugadorService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Etapa2",
 			Handler:    _LiderJugadorService_Etapa2_Handler,
+		},
+		{
+			MethodName: "Etapa2Fin",
+			Handler:    _LiderJugadorService_Etapa2Fin_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

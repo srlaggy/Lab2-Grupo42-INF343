@@ -7,6 +7,7 @@ import (
 	// rm "lab/lider/src/requestMountPL"
 	// sd "lab/lider/src/sendDeadPL"
 	// pr "lab/lider/src/playerRecordNL"
+	ut "lab/lider/utils"
 	rg "lab/lider/src/sendGameLJ"
 	sg "lab/lider/src/startGameL"
 	e1 "lab/lider/src/EtapaUnoLJ"
@@ -43,23 +44,19 @@ func main(){
 	// funcion que recibe jugadas de jugadores en la primera etapa
 	go e1.Grpc_func()
 	e1.LoopEtapaUno()
-	// time.Sleep(5*time.Second)
+	time.Sleep(3*time.Second)
 
-	// fmt.Println(sg.GetVivos())
+	// vivos fin etapa 1
+	ut.PrintVivos(sg.GetJugadores(), sg.GetVivos(), sg.GetMaxJug(), 1)
 
 	e2.GroupAndNumberLider()
 	fmt.Println("\nEtapa 2\n")
-	// fmt.Println("El numero del lider es", e2.GetNroLider())
-	// fmt.Println("El grupo 1 es", e2.GetGroup1())
-	// fmt.Println("El grupo 2 es", e2.GetGroup2())
 	
 	go e2.Grpc_func()
-	e2.LoopEtapaDos()
-	time.Sleep(5*time.Second)
+	e2.LogicaEtapaDosAndLoop()
+	time.Sleep(3*time.Second)
 
-	fmt.Println(sg.GetVivos())
-	fmt.Println(e2.GetJugadoresE2())
-	fmt.Println(e2.GetVivos())
-
+	// vivos fin etapa 2
+	ut.PrintVivos(sg.GetJugadores(), sg.GetVivos(), sg.GetMaxJug(), 2)
 	time.Sleep(5*time.Second)
 }

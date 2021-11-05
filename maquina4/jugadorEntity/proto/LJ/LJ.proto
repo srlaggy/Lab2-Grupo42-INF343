@@ -41,9 +41,19 @@ message Etapa2Resp{
     int64 stateMsg = 1;
 }
 
+message E2FinReq{
+    int64 nroJugador = 1;
+    int64 nroGroup = 2;
+}
+
+message E2FinResp{
+    int64 dead = 1;
+}
+
 service LiderJugadorService{
     rpc RequestGame(GameReq) returns (GameResp);
     rpc EtapaUno(NumPasosReq) returns (NumPasosResp);
     rpc Etapa2Conn(E2ConnReq) returns (E2ConnResp);
     rpc Etapa2(Etapa2Req) returns (Etapa2Resp);
+    rpc Etapa2Fin(E2FinReq) returns (E2FinResp);
 }

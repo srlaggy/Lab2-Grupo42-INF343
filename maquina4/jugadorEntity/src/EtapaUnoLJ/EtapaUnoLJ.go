@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 	"fmt"
+	"sync"
 	"math/rand"
 	"google.golang.org/grpc"
 	ut "lab/jugador/utils"
@@ -19,11 +20,9 @@ const (
 	max = 10
 )
 
-// variables globales
-var jugaronSlice []bool
-
-func RandomNumber() int64{
-	rand.Seed(time.Now().UnixNano())
+// determina numero random del jugador
+func RandomNumber(num int64) int64{
+	rand.Seed(time.Now().UnixNano() + num*5)
 	aux := rand.Intn(max - min) + min
 	return int64(aux)
 }
@@ -50,7 +49,8 @@ func EtapaUno(numero int64, contador int64, ronda int64, nroJugadorAux int64) in
 }
 
 // Juego 1 por rondas (4 rondas maximo)
-func StartGameUno(){
+func StartGameUno(wg *sync.WaitGroup){
+	defer wg.Done()
 	var eleccion int64
 	nroAux := rg.GetNumeroJugador()
 	vivosAux := rg.GetVivosSlice()
@@ -79,7 +79,6 @@ func StartGameUno(){
 		if resp==0{
 			fmt.Println("Tu estas muerto, BANG!!")
 			fmt.Println("Tu numero fue", aux)
-			jugaronSlice[nroAux-1] = true
 			vivosAux[nroAux-1] = false
 			break
 		}
@@ -88,7 +87,6 @@ func StartGameUno(){
 			fmt.Println("Superaste el juego 1, Felicidades!!")
 			fmt.Println("Tu numero fue", aux)
 			fmt.Println("Tu total fue", sumador)
-			jugaronSlice[nroAux-1] = true
 			break
 		}
 		if i==3{
@@ -96,14 +94,12 @@ func StartGameUno(){
 				fmt.Println("No lograste llegar al final, tu estas muerto, BANG!!")
 				fmt.Println("Tu numero fue", aux)
 				fmt.Println("Tu total fue", sumador)
-				jugaronSlice[nroAux-1] = true
 				vivosAux[nroAux-1] = false
 				break
 			} else if (sumador>=21 || resp==3){
 				fmt.Println("Superaste el juego 1, Felicidades!!")
 				fmt.Println("Tu numero fue", aux)
 				fmt.Println("Tu total fue", sumador)
-				jugaronSlice[nroAux-1] = true
 				break
 			}
 		}
@@ -114,29 +110,25 @@ func StartGameUno(){
 	}
 }
 
-func StartGameUnoBot(numeroJugadorBot int64){
+func StartGameUnoBot(numeroJugadorBot int64, wg *sync.WaitGroup){
+	defer wg.Done()
 	var sumador int64 = 0
 	vivosAux := rg.GetVivosSlice()
 	for i:=0; i<4; i++{
-		aux := RandomNumber()
+		aux := RandomNumber(int64(i)*numeroJugadorBot)
 		resp := EtapaUno(aux, sumador, int64(i), numeroJugadorBot)
 		if resp==0{
-			jugaronSlice[numeroJugadorBot-1] = true
 			vivosAux[numeroJugadorBot-1] = false
 			break
 		}
 		sumador += aux
 		if (sumador>=21 || resp==3){
-			jugaronSlice[numeroJugadorBot-1] = true
 			break
 		}
+		
 		if i==3{
 			if (sumador<21 || resp==2){
-				jugaronSlice[numeroJugadorBot-1] = true
 				vivosAux[numeroJugadorBot-1] = false
-				break
-			} else {
-				jugaronSlice[numeroJugadorBot-1] = true
 				break
 			}
 		}
@@ -145,34 +137,16 @@ func StartGameUnoBot(numeroJugadorBot int64){
 }
 
 func StartGameUnoTrigger(){
-	jugaronSlice = make([]bool, rg.GetMaxJug())
-	// inicializo valores de jugado - cuando todos hayan jugando puede cerrarse la conexion de juego 1
+	// wait groups
+	var wg sync.WaitGroup
+	wg.Add(rg.GetMaxJug())
 	for i:=0; i<rg.GetMaxJug(); i++{
-		jugaronSlice[i] = false
 		if i!=0{
-			go StartGameUnoBot(int64(i+1))
+			go StartGameUnoBot(int64(i+1), &wg)
+		} else {
+			go StartGameUno(&wg)
 		}
 	}
-	StartGameUno()
 
-	for{
-		if RevJugaron(){
-			break
-		}
-	}
-}
-
-// funcion que revisa si todos jugaron
-func RevJugaron() bool{
-	// retorna si todos jugaron
-	jugaron := true
-	for i:=0; i<len(jugaronSlice); i++{
-		// si pillo uno que no haya jugado, en verdad no han jugado todos
-		if !jugaronSlice[i]{
-			jugaron = false
-		}
-	}
-	// true -> todos jugaron
-	// false -> NO todos jugaron
-	return jugaron
+	wg.Wait()
 }

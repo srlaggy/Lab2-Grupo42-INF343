@@ -5,6 +5,7 @@ import (
 	e1 "lab/jugador/src/EtapaUnoLJ"
 	e2 "lab/jugador/src/EtapaDosLJ"
 	"fmt"
+	"time"
 )
 
 // --------------- FUNCION MAIN --------------- //
@@ -29,6 +30,8 @@ func main(){
 	rg.RequestGameBot("Jugador15 - Bot")
 	rg.RequestGameBot("Jugador16 - Bot")
 
+	time.Sleep(5*time.Second)
+
 	// Inicio Juego 1
 	e1.StartGameUnoTrigger()
 
@@ -36,7 +39,5 @@ func main(){
 	e2.Etapa2ConnTrigger()
 	e2.StartEtapa2Trigger()
 
-	// fmt.Println(rg.GetVivosSlice())
-	fmt.Println(e2.GetVivosNumeros())
-	fmt.Println(e2.GetVivosBool())
+	fmt.Println(e2.GetVivosNumerosFinal())
 }

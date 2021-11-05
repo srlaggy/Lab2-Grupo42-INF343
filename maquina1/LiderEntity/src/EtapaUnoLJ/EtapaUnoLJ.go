@@ -2,7 +2,7 @@ package EtapaUnoLJ
 
 import (
 	"context"
-	"log"
+	// "log"
 	"net"
 	"fmt"
 	"math/rand"
@@ -66,7 +66,7 @@ func Grpc_func() {
 
 	s := grpc.NewServer()
 	lj.RegisterLiderJugadorServiceServer(s, &server{})
-	log.Printf("Servidor grpc escuchando en el puerto %v", port_grpc1)
+	// log.Printf("Servidor grpc escuchando en el puerto %v", port_grpc1)
 	ut.FailOnError(s.Serve(lis), "Failed to serve")
 }
 
