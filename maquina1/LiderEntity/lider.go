@@ -12,6 +12,7 @@ import (
 	sg "lab/lider/src/startGameL"
 	e1 "lab/lider/src/EtapaUnoLJ"
 	e2 "lab/lider/src/EtapaDosLJ"
+	e3 "lab/lider/src/EtapaTresLJ"
 	"time"
 	"fmt"
 )
@@ -59,4 +60,9 @@ func main(){
 	// vivos fin etapa 2
 	ut.PrintVivos(sg.GetJugadores(), sg.GetVivos(), sg.GetMaxJug(), 2)
 	time.Sleep(5*time.Second)
+	fmt.Println("\nEtapa 3\n")
+
+	e3.SetterEtapa()
+	go e3.Grpc_func()
+	e3.LoopAux()
 }

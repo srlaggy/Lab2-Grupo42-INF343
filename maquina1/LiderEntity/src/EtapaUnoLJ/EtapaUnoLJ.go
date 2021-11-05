@@ -19,7 +19,7 @@ const (
 	port_grpc1 = "50001"
 	// min = 6   // descomentar
 	// max = 10  // descomentar
-	min = 10
+	min = 11
 	max = 12
 )
 

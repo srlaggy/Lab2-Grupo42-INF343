@@ -4,6 +4,7 @@ import (
 	rg "lab/jugador/src/requestGameLJ"
 	e1 "lab/jugador/src/EtapaUnoLJ"
 	e2 "lab/jugador/src/EtapaDosLJ"
+	e3 "lab/jugador/src/EtapaTresLJ"
 	"fmt"
 	"time"
 )
@@ -36,8 +37,20 @@ func main(){
 	e1.StartGameUnoTrigger()
 
 	// Inicio Juego 2
+	time.Sleep(5*time.Second)
 	e2.Etapa2ConnTrigger()
 	e2.StartEtapa2Trigger()
 
-	fmt.Println(e2.GetVivosNumerosFinal())
+	// Inicio Juego 3
+	time.Sleep(5*time.Second)
+	e3.Etapa3ConnTrigger()
+	time.Sleep(2*time.Second)
+	e3.Etapa3Trigger()
+	time.Sleep(5*time.Second)
+
+	fmt.Println(e3.GetJugadoresE3())
+	fmt.Println(e3.GetVivosE3())
+	fmt.Println(e3.GetCantVivos())
+
+	// fmt.Println(e2.GetVivosNumerosFinal())
 }

@@ -114,25 +114,21 @@ func Etapa2Final(nroJugadorAux int64, nroGrupoAux int64) int64{
 
 // inicializa conexion de todos a etapa 2
 func Etapa2ConnTrigger(){
-	var wgAux sync.WaitGroup
 	var auxWait int
-	wgAux.Add(1)
-	go func(){
-		defer wgAux.Done()
-		vivosInicioDos = GetVivosInicioDos()
-		grupos = make([]int64, len(vivosInicioDos))
-		vivosFinDos = make([]bool, len(vivosInicioDos))
-		// largo del wait group
-		if (len(vivosInicioDos)%2 != 0){
-			auxWait = len(vivosInicioDos) - 1
-		} else {
-			auxWait = len(vivosInicioDos)
-		}
-	}()
-	wgAux.Wait()
+	vivosInicioDos = GetVivosInicioDos()
+	grupos = make([]int64, len(vivosInicioDos))
+	vivosFinDos = make([]bool, len(vivosInicioDos))
+	// largo del wait group
+	if (len(vivosInicioDos)%2 != 0){
+		auxWait = len(vivosInicioDos) - 1
+	} else {
+		auxWait = len(vivosInicioDos)
+	}
+	time.Sleep(5*time.Second)
 	// wait group
 	var wg sync.WaitGroup
 	wg.Add(auxWait)
+	time.Sleep(5*time.Second)
 	for i:=0; i<len(vivosInicioDos); i++{
 		vivosFinDos[i] = true
 		if vivosInicioDos[i]!=1{

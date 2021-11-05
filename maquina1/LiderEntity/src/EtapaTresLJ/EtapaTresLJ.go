@@ -2,7 +2,7 @@ package EtapaTresLJ
 
 import (
 	"context"
-	"log"
+	// "log"
 	"net"
 	"fmt"
 	"math/rand"
@@ -36,11 +36,15 @@ type server struct {
 	lj.UnimplementedLiderJugadorServiceServer
 }
 
-// funcion: tercer juego
+//------------------------------------------------------//
+//------------------CONEXIONES--------------------------//
+//------------------------------------------------------//
+
+// funcion: tercer juego (reutilizamos protos y servicios)
 func (s *server) Etapa2Conn(ctx context.Context, in *lj.E2ConnReq) (*lj.E2ConnResp, error) {
 	fmt.Println("Ingreso el jugador: ", in.NroJugador)
 	if (in.NroJugador == num_eliminado){
-		return &lj.E2ConnResp{NroGroup: 10}, nil // grupo 1
+		return &lj.E2ConnResp{NroGroup: 10}, nil
 	}
 	nro_group_jugador := contains(lista_parejas, in.NroJugador)
 	return &lj.E2ConnResp{NroGroup: int64(nro_group_jugador)}, nil // tu moriste
@@ -58,42 +62,18 @@ func (s *server) Etapa2(ctx context.Context, in *lj.Etapa2Req) (*lj.Etapa2Resp, 
 	}
 	valor_bool := comparacion_final(nro_group_jugador_i, nro_group_jugador_j)
 	fmt.Println("jugador:", in.NroJugador, "se salva?", valor_bool)
+	// 1 - vive
+	// 0 - muere
 	if (valor_bool == true){
 		return &lj.Etapa2Resp{StateMsg: int64(1)}, nil
 	}else{
 		return &lj.Etapa2Resp{StateMsg: int64(0)}, nil
 	}
-	// return
-		
 }
 
-// funcion: contains
-func contains(s [][]int64, num int64) int {
-	count := 0
-    for _, v := range s {
-        if v[0] == num {
-            return count
-        }else if v[1] == num {
-            return count
-        }
-		count++
-    }
-    return 0
-}
-
-// FUNCIONES PARA LA FUNC ETAPA2:
-
-// funcion: contains
-func contains_subslice(s [][]int64, pos_i int, num int64) int {
-    for _, v := range s {
-        if v[0] == num {
-            return 0
-        }else if v[1] == num {
-            return 1
-        }
-    }
-    return 5
-}
+//------------------------------------------------------//
+//----------------------LOGICA--------------------------//
+//------------------------------------------------------//
 
 // funcion que compara los numeros de una pareja en la posicion i de la lista de numeros
 func comparacion_final(pos_i int, pos_j int) bool{
@@ -115,9 +95,6 @@ func comparacion_final(pos_i int, pos_j int) bool{
 	return list[pos_j]
 }
 
-
-// FUNCIONES PARA LA FUNC ETAPA2CONN:
-
 // funcion elimina un jugador en caso que el numero total de jugadores sea impar, sino, lo mantiene
 // True: cantidad par
 // False: cantidad impar
@@ -137,21 +114,6 @@ func ParidadEtapa3() (int, bool, []int64){
 	}else{
 		return c, false, jugadores_vivos
 	}
-}
-
-// funcion: encontrar la indexación de un elemento de un slice
-func FindIndex(num int64, lista []int64) int{
-    for i:=0; i<len(lista); i++{
-        if lista[i]==num{
-            return i
-        }
-    }
-    return -1
-}
-
-// funcion: eliminar un elemento en específico de un slice
-func remove(slice []int64, s int) []int64 {
-    return append(slice[:s], slice[s+1:]...)
 }
 
 // funcion: hacer grupos
@@ -193,29 +155,99 @@ func Parejas(){
     }
 }
 
+//------------------------------------------------------//
+//----------------------UTILES--------------------------//
+//------------------------------------------------------//
+
+// funcion: encontrar la indexación de un elemento de un slice
+func FindIndex(num int64, lista []int64) int{
+    for i:=0; i<len(lista); i++{
+        if lista[i]==num{
+            return i
+        }
+    }
+    return -1
+}
+
+// funcion: eliminar un elemento en específico de un slice
+func remove(slice []int64, s int) []int64 {
+    return append(slice[:s], slice[s+1:]...)
+}
+
 // funcion: lider elige su numero aleatoriamente enter 1 y 10
 func NroLider(){
+	rand.Seed(time.Now().UnixNano())
 	nroLider = int64(rand.Intn(max-min) + min)
 }
+
+// funcion: contains
+// retorna indice de la pareja en lista de parejas
+func contains(s [][]int64, num int64) int {
+	count := 0
+    for _, v := range s {
+        if v[0] == num {
+            return count
+        }else if v[1] == num {
+            return count
+        }
+		count++
+    }
+    return 0
+}
+
+// funcion: contains
+// retorna si es la primera (0) o segunda (1) persona de la pareja
+func contains_subslice(s [][]int64, pos_i int, num int64) int {
+    for _, v := range s {
+        if v[0] == num {
+            return 0
+        }else if v[1] == num {
+            return 1
+        }
+    }
+    return 5
+}
+
+// setea variables iniciales antes de iniciar servidor
+func SetterEtapa(){
+	sgv = sg.GetVivos()
+	Parejas()
+	NroLider()
+}
+
+//------------------------------------------------------//
+//----------------------GETTERS-------------------------//
+//------------------------------------------------------//
 
 // funcion: obtener el numero del lider
 func GetNroLider() int64{
 	return nroLider
 }
 
+//------------------------------------------------------//
+//----------------------REQUEST-------------------------//
+//------------------------------------------------------//
 
 // funciones: crea la conexión
 func Grpc_func() {
-	sgv = sg.GetVivos()
-	Parejas()
 	fmt.Println("Lista parejas inicio:", lista_parejas)
-	NroLider()
 	fmt.Println("El numero del lider es:", nroLider)
 	lis, err := net.Listen(protocolo_grpc, ":"+port_grpc1)
 	ut.FailOnError(err, "Failed to listen")
 
 	s := grpc.NewServer()
 	lj.RegisterLiderJugadorServiceServer(s, &server{})
-	log.Printf("Servidor grpc escuchando en el puerto %v", port_grpc1)
+	// log.Printf("Servidor grpc escuchando en el puerto %v", port_grpc1)
 	ut.FailOnError(s.Serve(lis), "Failed to serve")
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+func LoopAux(){
+	for{
+		if jugadores_inter_etapa3 >= vivostotales{
+			break
+		}
+	}
+	fmt.Println("60 segundos para el cierre")
+	time.Sleep(60*time.Second)
 }
