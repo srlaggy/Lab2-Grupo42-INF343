@@ -12,6 +12,7 @@ import (
 	sg "lab/lider/src/startGameL"
 	ut "lab/lider/utils"
 	sp "lab/lider/src/sendPlaysNL"
+	sd "lab/lider/src/sendDeadPL"
 )
 
 const (
@@ -62,6 +63,8 @@ func (s *server) Etapa2Conn(ctx context.Context, in *lj.E2ConnReq) (*lj.E2ConnRe
 	}else{
 		// vivo = false
 		sg.GetVivos()[in.NroJugador-1] = false
+		// se informa al pozo de la defuncion
+		sd.SendDead_amqp(sd.Muertos(int(in.NroJugador), 2))
 		return &lj.E2ConnResp{NroGroup: int64(0)}, nil // tu moriste
 	}
 }
@@ -91,6 +94,8 @@ func (s *server) Etapa2Fin(ctx context.Context, in *lj.E2FinReq) (*lj.E2FinResp,
 		vivos[FindIndex(in.NroJugador, jugadoresE2)] = false
 		sg.GetVivos()[in.NroJugador - 1] = false
 		fmt.Printf("El jugador %d ha muerto\n", in.NroJugador)
+		// se informa al pozo de la defuncion
+		sd.SendDead_amqp(sd.Muertos(int(in.NroJugador), 2))
 	}
 	recibio[FindIndex(in.NroJugador, jugadoresE2)] = true
 	return &lj.E2FinResp{Dead: msg}, nil

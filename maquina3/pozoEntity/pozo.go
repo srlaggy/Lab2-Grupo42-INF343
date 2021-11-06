@@ -8,6 +8,8 @@ import (
 
 // --------------- FUNCION MAIN --------------- //
 func main() {
+    // reseteamos pozo
+    rd.ResetPozo()
     // ----- GRPC ----- //
     // servidor grpc que envia el monto del pozo
     go sm.Grpc_func()

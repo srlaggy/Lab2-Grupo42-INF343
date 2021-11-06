@@ -16,13 +16,13 @@ const (
 
 // ------ FUNCIÓN: enviar los jugadores eliminados al pozo ----- // --> Lider actua como productor
 
-func muertos(nroJugador int, nroRonda int) string{
+func Muertos(nroJugador int, nroRonda int) string{
 	jugador := strconv.Itoa(nroJugador)
 	ronda := strconv.Itoa(nroRonda)
 	return "Jugador_" + jugador + " Ronda_" + ronda + " "
 }
 
-func SendDead_amqp() {
+func SendDead_amqp(body string) {
 	// Creamos conexion conn
 	conn2, err := amqp.Dial(ut.CreateDir(protocolo_rabbit, address_rabbit, port_rabbit))
 	ut.FailOnError(err, "Failed to connect to RabbitMQ")
@@ -43,8 +43,6 @@ func SendDead_amqp() {
 		nil,     // arguments
 	)
 	ut.FailOnError(err, "Failed to declare a queue")
-
-	body := muertos(13,4)
 
 	// routine
 	err = ch.Publish(

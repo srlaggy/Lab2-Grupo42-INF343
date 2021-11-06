@@ -12,6 +12,7 @@ import (
 	ut "lab/lider/utils"
 	sg "lab/lider/src/startGameL"
 	sp "lab/lider/src/sendPlaysNL"
+	sd "lab/lider/src/sendDeadPL"
 )
 
 const (
@@ -46,12 +47,16 @@ func (s *server) EtapaUno(ctx context.Context, in *lj.NumPasosReq) (*lj.NumPasos
 		juegoUno[int(in.NroJugador)-1] = true
 		msg = 0
 		fmt.Printf("El jugador %d ha muerto\n", in.NroJugador)
+		// se informa al pozo de la defuncion
+		sd.SendDead_amqp(sd.Muertos(int(in.NroJugador), 1))
 	}else if in.Ronda==3 && in.Total+in.PlayMsg<21{
 		sg.SetVivos(int(in.NroJugador)-1, false)
 		// ya jugo el juego
 		juegoUno[int(in.NroJugador)-1] = true
 		msg = 2
 		fmt.Printf("El jugador %d ha muerto\n", in.NroJugador)
+		// se informa al pozo de la defuncion
+		sd.SendDead_amqp(sd.Muertos(int(in.NroJugador), 1))
 	}else if in.Total+in.PlayMsg>=21{
 		msg = 3
 		// ya jugo el juego

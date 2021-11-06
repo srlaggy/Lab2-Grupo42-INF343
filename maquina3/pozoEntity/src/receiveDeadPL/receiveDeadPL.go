@@ -1,12 +1,3 @@
-// Funcion que reinicia el pozo con monto 0
-// func resetPozo(){
-// 	f, err := os.Create(fileName)
-// 	ut.FailOnError(err, "Failed to create file")
-//     defer f.Close()
-// 	_, err2 := f.WriteString("Jugador_0 Ronda_0 0\n")
-// 	ut.FailOnError(err2, "Failed to write file")
-// }
-
 package receiveDeadPL
 
 import (
@@ -21,7 +12,7 @@ import (
 
 const (
 	protocolo_amqp = "amqp"
-	address = "localhost"
+	address = "10.6.43.45"
 	port_amqp = "5672"
 	montoMuerto = 100000000
 	fileName = "utils/pozo.txt"
@@ -46,6 +37,15 @@ func writePozo(dead string){
 	// Escribimos en archivo
 	_, err1 := f.WriteString(newDead)
 	ut.FailOnError(err1, "Failed to write file")
+}
+
+// Funcion que reinicia el pozo con monto 0
+func ResetPozo(){
+	f, err := os.Create(fileName)
+	ut.FailOnError(err, "Failed to create file")
+    defer f.Close()
+	_, err2 := f.WriteString("Jugador_0 Ronda_0 0\n")
+	ut.FailOnError(err2, "Failed to write file")
 }
 
 // --------------- FUNCION PRINCIPAL --------------- //

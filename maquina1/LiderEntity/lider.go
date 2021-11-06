@@ -4,8 +4,9 @@ package main
 
 import (
 	// sp "lab/lider/src/sendPlaysNL"
-	// rm "lab/lider/src/requestMountPL"
+	rm "lab/lider/src/requestMountPL"
 	// sd "lab/lider/src/sendDeadPL"
+	lj "lab/lider/proto/LJ"
 	pr "lab/lider/src/playerRecordNL"
 	ut "lab/lider/utils"
 	rg "lab/lider/src/sendGameLJ"
@@ -13,37 +14,42 @@ import (
 	e1 "lab/lider/src/EtapaUnoLJ"
 	e2 "lab/lider/src/EtapaDosLJ"
 	e3 "lab/lider/src/EtapaTresLJ"
-	// "google.golang.org/grpc"
+	"google.golang.org/grpc"
 	"time"
+	"context"
 	"fmt"
 	"sync"
 	"strconv"
+	"net"
 )
 
-// const (
-// 	protocolo_grpc = "tcp"
-// 	port_grpc = "41000"
-// )
+const (
+	protocolo_grpc = "tcp"
+	port_grpc = "41000"
+)
 
-// func (s *server) RequestGame(ctx context.Context, in *lj.GameReq) (*lj.GameResp, error) {
-// 	value := sg.AddPlayerGame()
-// 	mensajeDeEntrada = "\nEl juego ya comenzó. No puedes ingresar.\n"
-// 	if value!=0{
-// 		mensajeDeEntrada = fmt.Sprintf("\nEstas dentro del juego. Eres el jugador %d\n", value)
-// 		log.Printf("Entry Received")
-// 	}
-// 	return &lj.GameResp{GameMsg: mensajeDeEntrada, NroJugador: value}, nil
-// }
+var monto int64 = 0
 
-// // --------------- FUNCION PRINCIPAL --------------- //
-// func Grpc_func_pozo() {
-// 	lis, err := net.Listen(protocolo_grpc, ":"+port_grpc)
-// 	ut.FailOnError(err, "Failed to listen")
+type server struct {
+	lj.UnimplementedLiderJugadorServiceServer
+}
 
-// 	s := grpc.NewServer()
-// 	lj.RegisterLiderJugadorServiceServer(s, &server{})
-// 	ut.FailOnError(s.Serve(lis), "Failed to serve")
-// }
+func (s *server) MontoJug(ctx context.Context, in *lj.MontoJugReq) (*lj.MontoJugResp, error) {
+	if in.Trigger==55{
+		monto = rm.RequestMount()
+	}
+	return &lj.MontoJugResp{MontoJugador: monto}, nil
+}
+
+// --------------- FUNCION PRINCIPAL --------------- //
+func Grpc_func_pozo() {
+	lis, err := net.Listen(protocolo_grpc, ":"+port_grpc)
+	ut.FailOnError(err, "Failed to listen")
+
+	s := grpc.NewServer()
+	lj.RegisterLiderJugadorServiceServer(s, &server{})
+	ut.FailOnError(s.Serve(lis), "Failed to serve")
+}
 
 // funcion para crear interfaz
 func interfaz(wg *sync.WaitGroup){
@@ -88,19 +94,10 @@ func main(){
 	go rg.Grpc_func()
 
 	// server de pedir monto al pozo
-	// go Grpc_func_pozo()
+	go Grpc_func_pozo()
 
 	// Crea arreglo de jugadores para el juego e inicia loop hasta obtener todos los jugadores
 	sg.StartGame()
-
-	// ----- FUNCIÓN: pedir monto acumulado al pozo ----- //
-	// go rm.RequestMount()
-
-	// ----- FUNCIÓN: enviar jugadas al NameNode ----- //
-	// go sp.SendPlaysLider("Jugador_2 Ronda_2 jugada_1")
-
-	// ----- FUNCIÓN: solicitar registro de jugadores al NameNode ----- //
-	// go pr.PlayerRecordLider("Jugador_1")
 
 	// ----- FUNCIÓN: enviar los jugadores eliminados al pozo ----- //
 	// sd.SendDead_amqp()

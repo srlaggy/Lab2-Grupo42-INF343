@@ -13,6 +13,7 @@ import (
 	sg "lab/lider/src/startGameL"
 	ut "lab/lider/utils"
 	sp "lab/lider/src/sendPlaysNL"
+	sd "lab/lider/src/sendDeadPL"
 )
 
 const (
@@ -44,6 +45,8 @@ type server struct {
 // funcion: tercer juego (reutilizamos protos y servicios)
 func (s *server) Etapa2Conn(ctx context.Context, in *lj.E2ConnReq) (*lj.E2ConnResp, error) {
 	if (in.NroJugador == num_eliminado){
+		// se informa al pozo de la defuncion
+		sd.SendDead_amqp(sd.Muertos(int(in.NroJugador), 3))
 		return &lj.E2ConnResp{NroGroup: 10}, nil
 	}
 	nro_group_jugador := contains(lista_parejas, in.NroJugador)
@@ -69,6 +72,8 @@ func (s *server) Etapa2(ctx context.Context, in *lj.Etapa2Req) (*lj.Etapa2Resp, 
 	if (valor_bool == true){
 		return &lj.Etapa2Resp{StateMsg: int64(1)}, nil
 	}else{
+		// se informa al pozo de la defuncion
+		sd.SendDead_amqp(sd.Muertos(int(in.NroJugador), 3))
 		return &lj.Etapa2Resp{StateMsg: int64(0)}, nil
 	}
 }

@@ -3,14 +3,14 @@ package requestMountPL
 import (
 	"context"
 	"time"
-	"fmt"
+	// "fmt"
 	"google.golang.org/grpc"
 	ut "lab/lider/utils"
 	sm "lab/lider/proto/sendMountPL"
 )
 
 const (
-	address = "localhost"
+	address = "10.6.43.47"
 	protocolo_grpc = ""
 	port_grpc = "60000"
 )
@@ -19,7 +19,7 @@ const (
 
 // ----- FUNCIÓN: pedir monto acumulado al pozo ----- // --> Lider actua como cliente
 
-func RequestMount() {
+func RequestMount() int64{
 	// Set up a connection to the server.
 	conn1, err := grpc.Dial(ut.CreateDir(protocolo_grpc, address, port_grpc), grpc.WithInsecure(), grpc.WithBlock())
 	ut.FailOnError(err, "Failed to create a connection")
@@ -31,5 +31,6 @@ func RequestMount() {
 	defer cancel()
 	r, err := c.SendMount(ctx, &sm.MountReq{})
 	ut.FailOnError(err, "Failed to send a mount")
-	fmt.Printf("El pozo tiene un monto de: %.f", r.GetMonto())
+	// fmt.Printf("El pozo tiene un monto de: %.f", r.GetMonto())
+	return int64(r.GetMonto())
 }
