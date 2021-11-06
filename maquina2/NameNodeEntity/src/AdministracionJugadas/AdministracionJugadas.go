@@ -54,7 +54,7 @@ func IniciarRegistroJugadas(){
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 func elegirDataNode(jugador string, ronda string) string {
-	Direcciones := [3]string{"Datanode_1", "Datanode_2", "Datanode_3"}
+	Direcciones := [3]string{"10.6.43.45", "10.6.43.47", "10.6.43.48"}
 	//TO-DO: Reemplazar por las direcciones ip de los pcs de la u,
 	// o las direcciones de prueba segun sea el caso
 	var ip string
@@ -68,7 +68,6 @@ func elegirDataNode(jugador string, ronda string) string {
 	_, error2 := file.WriteString(lineContent)
 	ut.FailOnError(error2, "Failed to write file")
 	defer file.Close()
-	// ip = "localhost" //DELETE
 	return ip
 }
 
@@ -95,7 +94,6 @@ func EntregarJugada(dato string) {
 	
 	ip = encontrarDataNode(s[0], s[1], false)
 
-	// ip = "localhost" //DELETE
 	sps.SendPlaysDataNode(dato, ip)
 }
 
@@ -137,7 +135,6 @@ func encontrarDataNode(jugador string, ronda string, flag bool) string{
 	if(!flag){
 		ip = elegirDataNode(jugador, ronda)
 	}
-	// ip = "localhost" //DELETE
 	return ip
 }
 

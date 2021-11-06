@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	address = "localhost"
+	address = "10.6.43.46"
 	protocolo_grpc = ""
 	port_grpc = "60001"
 )

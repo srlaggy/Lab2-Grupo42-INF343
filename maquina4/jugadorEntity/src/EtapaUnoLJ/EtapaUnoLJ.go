@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	address = "localhost"
+	address = "10.6.43.45" // IP DEL LIDER
 	protocolo_grpc = ""
 	port_grpc = "50001"
 	min = 1
